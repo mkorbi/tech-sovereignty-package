@@ -565,6 +565,8 @@ function buildMap(){
       const n=document.createElement('div');
       n.className='node';n.dataset.id=d.id;n.style.setProperty('--c',colorByKey[d.cluster]);
       n.innerHTML=`${T(d.short)}<span class="ntag">${d.date} · ${T(d.statusLabel)}</span>`;
+      n.addEventListener('mouseenter',()=>highlight(d.id));
+      n.addEventListener('mouseleave',()=>{ if(activeNode) highlight(activeNode); else resetMap(); });
       n.addEventListener('click',e=>{e.stopPropagation();selectNode(d.id);});
       row.appendChild(n);
     });
@@ -586,16 +588,17 @@ function drawEdges(active){
     svg.appendChild(p);
   }));
 }
-function selectNode(id){
-  activeNode=id;const set=new Set([id,...byId[id].buildsOn,...(dependents[id]||[])]);
+function highlight(id){
+  const set=new Set([id,...byId[id].buildsOn,...(dependents[id]||[])]);
   mapWrap.querySelectorAll('.node').forEach(n=>{
     n.classList.remove('active','related','dim');
     if(n.dataset.id===id)n.classList.add('active');
     else if(set.has(n.dataset.id))n.classList.add('related');
     else n.classList.add('dim');
   });
-  drawEdges(id);openModal(id);
+  drawEdges(id);
 }
+function selectNode(id){activeNode=id;highlight(id);openModal(id);}
 function resetMap(){activeNode=null;mapWrap.querySelectorAll('.node').forEach(n=>n.classList.remove('active','related','dim'));drawEdges(null);}
 mapWrap.addEventListener('click',resetMap);
 window.addEventListener('resize',()=>drawEdges(activeNode));
