@@ -117,6 +117,27 @@
   .notebox b{color:#7a4f00}
   .cnote{display:block;margin-top:10px;font-size:.76rem;color:#8a5a00;background:#fff7e6;border:1px solid #f0d9a8;border-radius:8px;padding:6px 9px;line-height:1.4}
   .tl-note{font-size:11.5px;color:#8a5a00;margin-top:4px}
+  .inv-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);margin-top:10px}
+  table.inv{width:100%;border-collapse:collapse;font-size:.9rem;min-width:780px}
+  table.inv th{text-align:left;background:var(--bg-soft);color:var(--ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:11px 14px;border-bottom:1px solid var(--line)}
+  table.inv td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.inv tbody tr:last-child td{border-bottom:none}
+  table.inv tbody tr:hover{background:#fafcff}
+  table.inv .nm{font-weight:600;white-space:nowrap}
+  table.inv .nm .d{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:middle}
+  table.inv .num{font-variant-numeric:tabular-nums}
+  .inv-dash{color:#9aa3b5}
+  .inv-funds{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+  @media(max-width:700px){.inv-funds{grid-template-columns:1fr}}
+  .inv-fund{background:var(--bg-soft);border:1px solid var(--line);border-radius:11px;padding:13px 15px}
+  .inv-fund b{display:block;margin-bottom:4px}
+  .inv-fund span{font-size:.85rem;color:var(--ink-soft)}
+  .inv-chart{display:flex;gap:30px;align-items:center;flex-wrap:wrap;margin:16px 0 6px;background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .inv-chart svg{flex:none}
+  .inv-legend{display:flex;flex-direction:column;gap:9px}
+  .inv-legend .it{display:flex;align-items:center;gap:10px;font-size:.9rem}
+  .inv-legend .sw{width:13px;height:13px;border-radius:3px;flex:none}
+  .inv-legend .amt{color:var(--ink-soft);margin-left:auto;font-variant-numeric:tabular-nums;padding-left:18px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -129,6 +150,7 @@
       <a href="#map" data-i18n="nav_map"></a>
       <a href="#timeline" data-i18n="nav_timeline"></a>
       <a href="#explorer" data-i18n="nav_explorer"></a>
+      <a href="#investments" data-i18n="nav_invest"></a>
     </nav>
     <div class="lang" id="lang">
       <button data-lang="en">EN</button>
@@ -193,6 +215,27 @@
   </div>
 </section>
 
+<section id="investments">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="inv_eyebrow"></span>
+    <h2 data-i18n="inv_h2"></h2>
+    <p class="lead" data-i18n="inv_lead"></p>
+    <div class="notebox" data-i18n="inv_caveat" style="max-width:none"></div>
+    <div class="inv-chart">
+      <svg id="invPie" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="Funding by field"></svg>
+      <div style="flex:1;min-width:280px">
+        <h3 id="invChartTitle" style="margin:0 0 2px"></h3>
+        <p class="muted" id="invChartSub" style="margin:.2em 0 14px;font-size:.85rem"></p>
+        <div id="invLegend" class="inv-legend"></div>
+        <p class="muted" id="invChartNote" style="margin:14px 0 0;font-size:.8rem"></p>
+      </div>
+    </div>
+    <div class="inv-table-wrap"><table class="inv" id="invTable"></table></div>
+    <h3 id="invFundsTitle" style="margin:28px 0 0"></h3>
+    <div id="invFunds" class="inv-funds"></div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <strong data-i18n="footer_strong"></strong>
@@ -212,7 +255,7 @@ const colorByKey={framework:"#6b4ea0",infra:"#1a73e8",regulation:"#003399",strat
 const UI = {
   en:{
     brand:"EU Tech Sovereignty",
-    nav_overview:"Overview", nav_map:"How it connects", nav_timeline:"Timeline", nav_explorer:"Explore initiatives",
+    nav_overview:"Overview", nav_map:"How it connects", nav_timeline:"Timeline", nav_explorer:"Explore initiatives", nav_invest:"Investments",
     hero_eyebrow:"Strengthening Europe's Tech Sovereignty",
     hero_h1:"Many initiatives, one goal: digital independence.",
     hero_lead:"Tech sovereignty is Europe's ability to act independently in the digital world — developing and controlling key technologies, data and infrastructure while reducing reliance on non‑EU providers. Explore how the pieces build on each other, when each arrives, what companies must do, and what it means for you.",
@@ -235,6 +278,22 @@ const UI = {
     explorer_eyebrow:"Go deeper", explorer_h2:"Explore the initiatives",
     explorer_lead:"Filter by theme, then open any card for what it is, what companies must do, what it means for end users, its dependencies and the official document.",
     all:"All",
+    inv_eyebrow:"Follow the money", inv_h2:"The investments behind it",
+    inv_lead:"Direct EU-budget money kept separate from total 'mobilised' amounts (which include private and Member-State co-investment). These figures overlap across funds and are not additive.",
+    inv_caveat:"Read with care: 'EU budget' is direct Commission/EU money; 'mobilised' headline figures mix EU, national and private investment and often double-count. Many funds (e.g. Digital Europe, Horizon Europe) finance several initiatives at once. Most regulations have no dedicated spending.",
+    inv_col_init:"Initiative", inv_col_eu:"EU budget (direct)", inv_col_mob:"Total mobilised (incl. private / Member States)", inv_col_period:"Period", inv_col_note:"Notes",
+    inv_chart_title:"Earmarked funding by field",
+    inv_chart_sub:"Concrete EU-backed funding vehicles, € billion. Excludes cross-cutting funds; figures mix public and private money and are approximate.",
+    inv_chart_note:"Separately, the InvestAI initiative targets €200bn of overall AI investment mobilisation — not shown here so the slices stay comparable.",
+    inv_chart_total:"shown total",
+    inv_funds_title:"Cross-cutting EU funding instruments",
+    inv_funds:[
+      {n:"Digital Europe Programme",v:"€7.59bn (2021–27): AI €2.5bn · cybersecurity €2bn · cloud/data & AI Factories €1.3bn · skills €0.7bn · deployment & interoperability €1.3bn"},
+      {n:"Connecting Europe Facility – Digital",v:"€2.07bn (2021–27) for connectivity, incl. ~€300m for cross-border 5G corridors"},
+      {n:"Horizon Europe",v:"R&I funding feeding AI, quantum, chips and the €5bn Scaleup Europe Fund"},
+      {n:"InvestEU & EIB Group",v:"Guarantees and equity that de-risk and mobilise private capital (e.g. InvestAI, gigafactories)"},
+      {n:"Recovery & Resilience Facility",v:"~€150bn of national digital spending (≈20% of the RRF)"}
+    ],
     tab_what:"What it is", tab_company:"For companies", tab_user:"For end users", tab_deps:"Dependencies",
     h_company:"What a company needs to do", h_user:"What it means for end users", h_deps:"How it connects",
     open_doc:"Open official document ↗", note_label:"⚠ Note:",
@@ -246,7 +305,7 @@ const UI = {
   },
   de:{
     brand:"EU-Technologiesouveränität",
-    nav_overview:"Überblick", nav_map:"Zusammenhänge", nav_timeline:"Zeitleiste", nav_explorer:"Initiativen erkunden",
+    nav_overview:"Überblick", nav_map:"Zusammenhänge", nav_timeline:"Zeitleiste", nav_explorer:"Initiativen erkunden", nav_invest:"Investitionen",
     hero_eyebrow:"Stärkung der Technologiesouveränität Europas",
     hero_h1:"Viele Initiativen, ein Ziel: digitale Unabhängigkeit.",
     hero_lead:"Technologiesouveränität ist Europas Fähigkeit, in der digitalen Welt unabhängig zu handeln – Schlüsseltechnologien, Daten und Infrastruktur selbst zu entwickeln und zu kontrollieren und zugleich die Abhängigkeit von Nicht-EU-Anbietern zu verringern. Entdecken Sie, wie die Bausteine aufeinander aufbauen, wann sie kommen, was Unternehmen tun müssen und was es für Sie bedeutet.",
@@ -269,6 +328,22 @@ const UI = {
     explorer_eyebrow:"Mehr erfahren", explorer_h2:"Die Initiativen erkunden",
     explorer_lead:"Nach Thema filtern und dann eine Karte öffnen – für Worum es geht, Was Unternehmen tun müssen, Was es für Endnutzer bedeutet, die Abhängigkeiten und das offizielle Dokument.",
     all:"Alle",
+    inv_eyebrow:"Den Geldströmen folgen", inv_h2:"Die Investitionen dahinter",
+    inv_lead:"Direkte EU-Haushaltsmittel getrennt von den gesamten „mobilisierten“ Beträgen (die private und nationale Ko-Investitionen enthalten). Diese Zahlen überschneiden sich und sind nicht addierbar.",
+    inv_caveat:"Mit Vorsicht lesen: „EU-Haushalt“ sind direkte Kommissions-/EU-Mittel; „mobilisiert“ vermischt EU-, nationale und private Investitionen und zählt oft doppelt. Viele Fonds (z. B. Digitales Europa, Horizont Europa) finanzieren mehrere Initiativen zugleich. Die meisten Verordnungen haben keine eigenen Ausgaben.",
+    inv_col_init:"Initiative", inv_col_eu:"EU-Haushalt (direkt)", inv_col_mob:"Gesamt mobilisiert (inkl. privat / Mitgliedstaaten)", inv_col_period:"Zeitraum", inv_col_note:"Hinweise",
+    inv_chart_title:"Zweckgebundene Mittel nach Bereich",
+    inv_chart_sub:"Konkrete EU-gestützte Finanzierungsinstrumente, in Mrd. €. Ohne übergreifende Fonds; Zahlen mischen öffentlich und privat und sind Näherungswerte.",
+    inv_chart_note:"Daneben zielt die InvestAI-Initiative auf eine Gesamtmobilisierung von 200 Mrd. € für KI – hier nicht dargestellt, damit die Segmente vergleichbar bleiben.",
+    inv_chart_total:"gezeigte Summe",
+    inv_funds_title:"Übergreifende EU-Finanzierungsinstrumente",
+    inv_funds:[
+      {n:"Programm Digitales Europa",v:"7,59 Mrd. € (2021–27): KI 2,5 Mrd. · Cybersicherheit 2 Mrd. · Cloud/Daten & KI-Fabriken 1,3 Mrd. · Kompetenzen 0,7 Mrd. · Einführung & Interoperabilität 1,3 Mrd. €"},
+      {n:"Fazilität „Connecting Europe“ – Digital",v:"2,07 Mrd. € (2021–27) für Konnektivität, inkl. ~300 Mio. € für grenzüberschreitende 5G-Korridore"},
+      {n:"Horizont Europa",v:"F&I-Mittel für KI, Quanten, Chips und den 5-Mrd.-€-Scaleup-Europe-Fonds"},
+      {n:"InvestEU & EIB-Gruppe",v:"Garantien und Beteiligungen, die privates Kapital absichern und mobilisieren (z. B. InvestAI, Gigafabriken)"},
+      {n:"Aufbau- und Resilienzfazilität",v:"~150 Mrd. € nationale Digitalausgaben (≈20 % der RRF)"}
+    ],
     tab_what:"Worum es geht", tab_company:"Für Unternehmen", tab_user:"Für Endnutzer", tab_deps:"Abhängigkeiten",
     h_company:"Was ein Unternehmen tun muss", h_user:"Was es für Endnutzer bedeutet", h_deps:"Zusammenhänge",
     open_doc:"Offizielles Dokument öffnen ↗", note_label:"⚠ Hinweis:",
@@ -527,6 +602,85 @@ const DATA = [
    docUrl:"https://commission.europa.eu/news-and-media/news/sovereign-cloud-framework-explained-2026-06-01_en"}
 ];
 
+// investment data (figures language-neutral; phrases bilingual)
+const INV = {
+  digitalDecade:{period:"2021–2027",
+    eu:L("Digital Europe €7.59bn + CEF Digital €2.07bn","Digitales Europa 7,59 Mrd. € + CEF Digital 2,07 Mrd. €"),
+    mob:L("~€150bn national digital spend via the Recovery & Resilience Facility (≈20%)","~150 Mrd. € nationale Digitalausgaben über die Aufbau- und Resilienzfazilität (≈20 %)"),
+    note:L("Umbrella 2030 framework — most other funds count toward its targets.","Übergreifender 2030-Rahmen – die meisten anderen Fonds zahlen auf seine Ziele ein.")},
+  chips:{period:"to 2030",
+    eu:L("€3.3bn EU budget (Chips for Europe); €6.2bn total public","3,3 Mrd. € EU-Haushalt (Chips für Europa); 6,2 Mrd. € öffentlich gesamt"),
+    mob:L("€43bn target (EU + Member States + private); >€80bn actually triggered","43 Mrd. € Ziel (EU + Mitgliedstaaten + privat); >80 Mrd. € tatsächlich ausgelöst"),
+    note:L("€31.5bn+ approved across first-of-a-kind fabs; €700m NanoIC pilot line.","31,5 Mrd. €+ für Erstanlagen genehmigt; 700 Mio. € NanoIC-Pilotlinie.")},
+  aiFactories:{period:"2021–2027",
+    eu:L("~€10bn public (EU + Member States) via EuroHPC","~10 Mrd. € öffentlich (EU + Mitgliedstaaten) über EuroHPC"),
+    mob:L("+ €20bn InvestAI fund for up to 5 AI Gigafactories (≈30–35% public)","+ 20 Mrd. € InvestAI-Fonds für bis zu 5 KI-Gigafabriken (≈30–35 % öffentlich)"),
+    note:L("EuroHPC JU total budget ~€7bn; gigafactories operational 2027–28.","EuroHPC-JU-Gesamtbudget ~7 Mrd. €; Gigafabriken 2027–28 in Betrieb.")},
+  dna:{period:"2021–2027",
+    eu:L("€2.07bn CEF Digital (connectivity); EURO-3C €75m","2,07 Mrd. € CEF Digital (Konnektivität); EURO-3C 75 Mio. €"),
+    mob:L("Designed to catalyse private network investment","Soll private Netzinvestitionen anstoßen"),
+    note:L("~€300m of CEF Digital for cross-border 5G corridors.","~300 Mio. € aus CEF Digital für grenzüberschreitende 5G-Korridore.")},
+  quantum:{period:"2018–2028",
+    eu:L("€1bn Quantum Flagship + Digital Europe & Horizon quantum strands","1 Mrd. € Quantum-Flaggschiff + Quanten-Stränge in Digitales Europa & Horizont"),
+    mob:L("+ EuroQCI deployment (with Member States & ESA)","+ EuroQCI-Aufbau (mit Mitgliedstaaten & ESA)"),
+    note:L("EIC put ~€350m into quantum start-ups (2021–24), up to €30m per scaleup.","Der EIC investierte ~350 Mio. € in Quanten-Start-ups (2021–24), bis zu 30 Mio. € je Scale-up.")},
+  aiAct:{period:"—", eu:"—", mob:"—",
+    note:L("Regulation — no dedicated investment programme (AI Office runs on Commission budget).","Verordnung – kein eigenes Investitionsprogramm (das KI-Büro läuft über den Kommissionshaushalt).")},
+  dataAct:{period:"—", eu:"—", mob:"—",
+    note:L("Regulation — no dedicated fund; data-sharing rules, not spending.","Verordnung – kein eigener Fonds; Datenregeln, keine Ausgaben.")},
+  dsa:{period:"—", eu:"—", mob:"—",
+    note:L("Regulation — supervision funded by a fee on very large platforms.","Verordnung – Aufsicht über eine Gebühr für sehr große Plattformen finanziert.")},
+  dma:{period:"—", eu:"—", mob:"—",
+    note:L("Regulation — no dedicated investment programme.","Verordnung – kein eigenes Investitionsprogramm.")},
+  cra:{period:"—", eu:"—", mob:"—",
+    note:L("Regulation — no dedicated fund; security requirements for products.","Verordnung – kein eigener Fonds; Sicherheitsanforderungen für Produkte.")},
+  aiContinent:{period:"from 2025",
+    eu:L("Digital Europe AI strand €2.5bn + Horizon Europe + InvestEU","KI-Strang Digitales Europa 2,5 Mrd. € + Horizont Europa + InvestEU"),
+    mob:L("€200bn InvestAI initiative (overall AI mobilisation target)","200 Mrd. € InvestAI-Initiative (Gesamtziel KI-Mobilisierung)"),
+    note:L("Umbrella AI plan — channels the funds above.","Übergreifender KI-Plan – bündelt die obigen Mittel.")},
+  applyAi:{period:"from 2025",
+    eu:L("Digital Europe AI strand + European Digital Innovation Hubs","KI-Strang Digitales Europa + Europäische Digitale Innovationszentren"),
+    mob:"—",
+    note:L("Adoption strategy — uses existing AI funding, not a new fund.","Verbreitungsstrategie – nutzt bestehende KI-Mittel statt eines neuen Fonds.")},
+  dataUnion:{period:"2021–2027",
+    eu:L("~€100m+ (Digital Europe) for common European data spaces","~100 Mio. €+ (Digitales Europa) für gemeinsame europäische Datenräume"),
+    mob:"—",
+    note:L("Includes a defence data space; leverages open & high-value datasets.","Einschließlich eines Verteidigungs-Datenraums; nutzt offene und hochwertige Datensätze.")},
+  startup:{period:"from 2026",
+    eu:L("€1bn Horizon Europe seed of the Scaleup Europe Fund + InvestEU, EIC","1 Mrd. € Horizont-Europa-Anschub des Scaleup-Europe-Fonds + InvestEU, EIC"),
+    mob:L("€5bn Scaleup Europe Fund (incl. ~€4bn private) + Tech Champions Initiative","5 Mrd. € Scaleup-Europe-Fonds (inkl. ~4 Mrd. € privat) + Tech-Champions-Initiative"),
+    note:L("First investments expected autumn 2026; managed via the EIC Fund.","Erste Investitionen für Herbst 2026 erwartet; verwaltet über den EIC-Fonds.")},
+  cada:{period:"from 2023",
+    eu:L("IPCEI-CIS €1.2bn public; €180m EU sovereign-cloud procurement","IPCEI-CIS 1,2 Mrd. € öffentlich; 180 Mio. € EU-Beschaffung souveräne Cloud"),
+    mob:L("+ €1.4bn private via IPCEI-CIS (€2.6bn total); aims to triple EU data-centre capacity","+ 1,4 Mrd. € privat über IPCEI-CIS (2,6 Mrd. € gesamt); Ziel: Verdreifachung der EU-Rechenzentrumskapazität"),
+    note:L("CADA itself is a proposal; figures shown are the cloud funding it builds on.","CADA selbst ist ein Vorschlag; gezeigte Zahlen sind die zugrunde liegende Cloud-Förderung.")},
+  omnibus:{period:"—", eu:"—", mob:"—",
+    note:L("Simplification — saves compliance cost rather than spending.","Vereinfachung – spart Befolgungskosten statt Ausgaben.")},
+  openSource:{period:"from 2026",
+    eu:L("Supported via Digital Europe & Interoperable Europe (no large dedicated fund)","Unterstützt über Digitales Europa & Interoperable Europe (kein großer eigener Fonds)"),
+    mob:"—",
+    note:L("Strategy promotes open assets, communities & governance across the stack.","Strategie fördert offene Bausteine, Communities & Governance über den Stack.")},
+  oss:{period:"2024–2025",
+    eu:L("Hosted via Interoperable Europe (Digital Europe-funded)","Bereitgestellt über Interoperable Europe (aus Digitales Europa finanziert)"),
+    mob:"—",
+    note:L("Catalogue platform — minimal direct cost.","Katalog-Plattform – minimale direkte Kosten.")},
+  ict:{period:"2026", eu:"—", mob:"—",
+    note:L("Coordination toolbox — no dedicated fund (complements NIS2 & CRA).","Koordinierungs-Instrumentarium – kein eigener Fonds (ergänzt NIS2 & CRA).")},
+  seal:{period:"2025–2026", eu:"—", mob:"—",
+    note:L("Procurement tool — governed the €180m EU sovereign-cloud award (shown under CADA).","Beschaffungsinstrument – steuerte die 180-Mio.-€-Vergabe für souveräne EU-Cloud (unter CADA aufgeführt).")}
+};
+
+// funding by field (concrete earmarked vehicles, € billion)
+const INVFIELDS = [
+  {n:L("Chips / semiconductors","Chips / Halbleiter"),v:43,c:"#003399"},
+  {n:L("AI & compute","KI & Rechenleistung"),v:30,c:"#1a73e8"},
+  {n:L("Start-ups & scale-ups","Start-ups & Scale-ups"),v:5,c:"#c77d18"},
+  {n:L("Cloud & edge","Cloud & Edge"),v:2.6,c:"#0a8a99"},
+  {n:L("Connectivity","Konnektivität"),v:2.07,c:"#1f8a4c"},
+  {n:L("Quantum","Quanten"),v:1,c:"#6b4ea0"},
+  {n:L("Data spaces","Datenräume"),v:0.1,c:"#d23f6f"}
+];
+
 // helpers
 const T=(v)=> (v && typeof v==='object' && ('en' in v)) ? v[lang] : v;
 const byId=Object.fromEntries(DATA.map(d=>[d.id,d]));
@@ -686,8 +840,43 @@ function closeModal(){overlay.classList.remove('open');document.body.style.overf
 overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
+function fmtBn(v){return lang==='de'?(String(v).replace('.',',')+' Mrd. €'):('€'+v+'bn');}
+function invPolar(cx,cy,r,ang){const a=(ang-90)*Math.PI/180;return [cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+function invArc(cx,cy,rO,rI,a0,a1){
+  const [x0,y0]=invPolar(cx,cy,rO,a0),[x1,y1]=invPolar(cx,cy,rO,a1);
+  const [x2,y2]=invPolar(cx,cy,rI,a1),[x3,y3]=invPolar(cx,cy,rI,a0);
+  const laf=(a1-a0)>180?1:0;
+  return `M${x0.toFixed(2)},${y0.toFixed(2)} A${rO},${rO} 0 ${laf} 1 ${x1.toFixed(2)},${y1.toFixed(2)} L${x2.toFixed(2)},${y2.toFixed(2)} A${rI},${rI} 0 ${laf} 0 ${x3.toFixed(2)},${y3.toFixed(2)} Z`;
+}
+function renderInvChart(){
+  const total=INVFIELDS.reduce((s,f)=>s+f.v,0);
+  let ang=0,paths='';
+  INVFIELDS.forEach(f=>{const a1=ang+f.v/total*360;
+    paths+=`<path d="${invArc(120,120,100,58,ang,a1)}" fill="${f.c}" stroke="#fff" stroke-width="1.5"><title>${T(f.n)}: ${fmtBn(f.v)}</title></path>`;ang=a1;});
+  const shown=Math.round(total*10)/10;
+  document.getElementById('invPie').innerHTML=paths+
+    `<text x="120" y="116" text-anchor="middle" font-size="15" font-weight="800" fill="#1b2333">~${fmtBn(shown)}</text>`+
+    `<text x="120" y="135" text-anchor="middle" font-size="9.5" fill="#5a6478">${ui('inv_chart_total')}</text>`;
+  document.getElementById('invChartTitle').textContent=ui('inv_chart_title');
+  document.getElementById('invChartSub').textContent=ui('inv_chart_sub');
+  document.getElementById('invChartNote').textContent=ui('inv_chart_note');
+  document.getElementById('invLegend').innerHTML=INVFIELDS.map(f=>
+    `<div class="it"><span class="sw" style="background:${f.c}"></span><span>${T(f.n)}</span><span class="amt">${fmtBn(f.v)} · ${Math.round(f.v/total*100)}%</span></div>`).join('');
+}
+function renderInvest(){
+  const dash='<span class="inv-dash">—</span>';
+  const cell=(v)=>{const s=T(v); return (!s||s==='—')?dash:s;};
+  const tb=document.getElementById('invTable');
+  tb.innerHTML=`<thead><tr><th>${ui('inv_col_init')}</th><th>${ui('inv_col_eu')}</th><th>${ui('inv_col_mob')}</th><th>${ui('inv_col_period')}</th><th>${ui('inv_col_note')}</th></tr></thead><tbody>`+
+    DATA.map(d=>{const v=INV[d.id]||{};
+      return `<tr><td class="nm"><span class="d" style="background:${colorByKey[d.cluster]}"></span>${T(d.short)}</td>
+        <td class="num">${cell(v.eu)}</td><td class="num">${cell(v.mob)}</td><td>${cell(v.period)}</td><td class="muted">${v.note?T(v.note):''}</td></tr>`;
+    }).join('')+`</tbody>`;
+  document.getElementById('invFundsTitle').textContent=ui('inv_funds_title');
+  document.getElementById('invFunds').innerHTML=ui('inv_funds').map(f=>`<div class="inv-fund"><b>${f.n}</b><span>${f.v}</span></div>`).join('');
+}
 function renderAll(){
-  renderStatic();buildMap();renderTimeline();renderFilters();renderGrid();
+  renderStatic();buildMap();renderTimeline();renderFilters();renderGrid();renderInvChart();renderInvest();
   setTimeout(()=>drawEdges(activeNode),60);
 }
 function setLang(l){lang=l;try{localStorage.setItem('eutslang',l)}catch(e){}renderAll();}
