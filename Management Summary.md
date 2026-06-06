@@ -20,7 +20,7 @@ Tech sovereignty is not a single law but an umbrella over roughly seventeen init
 
 **Infrastructure and strategic technologies** — the European Chips Act (semiconductors), the Quantum Europe Strategy, and the Digital Networks Act (connectivity rules).
 
-**Data and innovation** — the Data Union Strategy, the Data Act, the EU Startup and Scaleup Strategy, the Digital Omnibus (simplification), and the EU Open-Source Solutions Catalogue.
+**Data and innovation** — the Data Union Strategy, the Data Act, the EU Startup and Scaleup Strategy, the Digital Omnibus (simplification), the EU Open Source Strategy (the software-layer pillar promoting European open alternatives across the stack), and the EU Open-Source Solutions Catalogue.
 
 **Cloud sovereignty** — the Cloud and AI Development Act (CADA), the legislative anchor that builds EU data-centre/compute capacity and defines four sovereignty assurance levels, together with the Cloud Sovereignty Framework (SEAL), the Commission's practical scoring tool already used to procure sovereign cloud for the EU institutions. This cluster is the part of the agenda most directly aimed at the ~€80% dependency on non-EU cloud providers.
 
@@ -63,5 +63,6 @@ Taken together, these initiatives represent the EU's attempt to close an 80%+ de
 17. ICT Supply Chain Security Toolbox
 18. Cloud and AI Development Act (CADA)
 19. Cloud Sovereignty Framework (SEAL)
+20. EU Open Source Strategy
 
 Sources: [Strengthening Europe's Tech Sovereignty](https://digital-strategy.ec.europa.eu/en/policies/eu-tech-sovereignty)

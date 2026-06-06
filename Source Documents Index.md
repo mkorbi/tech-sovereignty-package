@@ -149,6 +149,13 @@ Direct links to the actual paper or law document behind each of the 17 initiativ
 - **Framework explained (news):** https://commission.europa.eu/news-and-media/news/sovereign-cloud-framework-explained-2026-06-01_en
 - **Framework document (PDF):** https://commission.europa.eu/document/download/09579818-64a6-4dd5-9577-446ab6219113_en
 
+### 20. EU Open Source Strategy
+- **Document:** Part of Communication COM(2026) 503 — European Tech Sovereignty & EU Open Source Strategy (3 June 2026)
+- **EC policy page:** https://digital-strategy.ec.europa.eu/en/policies/open-source-strategy
+- **Communication + annexes (library):** https://digital-strategy.ec.europa.eu/en/library/communication-european-tech-sovereignty-accompanied-eu-open-source-strategy
+- **Communication (PDF):** https://ec.europa.eu/newsroom/dae/redirection/document/129100
+- **Annexes (PDF):** https://ec.europa.eu/newsroom/dae/redirection/document/129101
+
 ---
 
 ## Note on downloading

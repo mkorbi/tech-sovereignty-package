@@ -6,70 +6,47 @@
 <title>EU Tech Sovereignty — Interactive Explorer</title>
 <style>
   :root{
-    --bg:#ffffff;
-    --bg-soft:#f6f8fc;
-    --ink:#1b2333;
-    --ink-soft:#5a6478;
-    --line:#e4e9f2;
-    --eu:#003399;
-    --eu-soft:#e8efff;
-    --accent:#1a73e8;
-    --gold:#ffcc00;
-    --green:#1f8a4c;
-    --amber:#c77d18;
-    --violet:#6b4ea0;
-    --shadow:0 1px 2px rgba(16,30,70,.06),0 8px 24px rgba(16,30,70,.06);
-    --radius:14px;
+    --bg:#ffffff;--bg-soft:#f6f8fc;--ink:#1b2333;--ink-soft:#5a6478;--line:#e4e9f2;
+    --eu:#003399;--eu-soft:#e8efff;--accent:#1a73e8;--gold:#ffcc00;
+    --green:#1f8a4c;--amber:#c77d18;--violet:#6b4ea0;
+    --shadow:0 1px 2px rgba(16,30,70,.06),0 8px 24px rgba(16,30,70,.06);--radius:14px;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{
-    margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased;
-  }
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
   a{color:var(--accent);text-decoration:none}
   a:hover{text-decoration:underline}
-
-  /* NAV */
-  header.nav{
-    position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   .nav-inner{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
   .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em}
   .brand .stars{width:26px;height:26px;border-radius:50%;background:var(--eu);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:13px}
   .nav-links{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
   .nav-links a{padding:7px 13px;border-radius:999px;color:var(--ink-soft);font-size:14px;font-weight:500}
   .nav-links a:hover{background:var(--bg-soft);text-decoration:none;color:var(--ink)}
-
+  .lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-left:8px}
+  .lang button{border:none;background:#fff;padding:7px 13px;font-size:13px;font-weight:700;color:var(--ink-soft);cursor:pointer}
+  .lang button.on{background:var(--eu);color:#fff}
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
   section{padding:72px 0;border-bottom:1px solid var(--line)}
   .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:700;color:var(--eu)}
   h1{font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.05;letter-spacing:-.02em;margin:.3em 0 .25em}
   h2{font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.02em;margin:.2em 0 .4em}
-  .lead{font-size:1.15rem;color:var(--ink-soft);max-width:62ch}
+  .lead{font-size:1.15rem;color:var(--ink-soft);max-width:64ch}
   .muted{color:var(--ink-soft)}
-
-  /* HERO */
   .hero{padding-top:64px}
   .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center}
   @media(max-width:840px){.hero-grid{grid-template-columns:1fr}}
   .stat-card{background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);padding:26px}
-  .big-num{font-size:3.4rem;font-weight:800;letter-spacing:-.03em;color:var(--eu);line-height:1}
   .ring{display:flex;gap:18px;align-items:center}
   .donut{width:118px;height:118px;flex:none}
   .pillars{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
   .chip{font-size:13px;padding:6px 12px;border-radius:999px;background:var(--eu-soft);color:var(--eu);font-weight:600;border:1px solid #d4e0ff}
-
-  /* generic cards row */
   .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px}
   @media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:540px){.cards{grid-template-columns:1fr}}
   .mini{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
   .mini h4{margin:.1em 0 .35em;font-size:1rem}
   .mini p{margin:0;font-size:.9rem;color:var(--ink-soft)}
-
-  /* DEPENDENCY MAP */
   .map-help{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin:8px 0 18px;font-size:13px;color:var(--ink-soft)}
   .legend-dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:middle}
   #mapWrap{position:relative;background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);padding:26px 20px;overflow:hidden}
@@ -78,19 +55,14 @@
   .layer:last-child{margin-bottom:0}
   .layer-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--ink-soft);margin-bottom:10px}
   .layer-row{display:flex;flex-wrap:wrap;gap:12px}
-  .node{
-    position:relative;background:#fff;border:1.5px solid var(--line);border-radius:11px;padding:10px 14px;cursor:pointer;
-    font-size:13.5px;font-weight:600;transition:.18s;box-shadow:var(--shadow);max-width:230px
-  }
+  .node{position:relative;background:#fff;border:1.5px solid var(--line);border-radius:11px;padding:10px 14px;cursor:pointer;font-size:13.5px;font-weight:600;transition:.18s;box-shadow:var(--shadow);max-width:240px}
   .node .ntag{display:block;font-size:11px;font-weight:600;color:var(--ink-soft);margin-top:2px}
   .node:hover{transform:translateY(-2px);border-color:var(--accent)}
   .node.dim{opacity:.28;filter:grayscale(.4)}
   .node.active{border-color:var(--eu);box-shadow:0 0 0 3px var(--eu-soft),var(--shadow)}
   .node.related{border-color:var(--accent);box-shadow:0 0 0 3px #e3efff,var(--shadow)}
   .node::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:11px 0 0 11px;background:var(--c,var(--eu))}
-
-  /* TIMELINE */
-  .tl{position:relative;margin-top:20px;padding-left:0}
+  .tl{position:relative;margin-top:20px}
   .tl-year{display:flex;gap:20px;margin-bottom:6px}
   .tl-year .yr{flex:none;width:74px;text-align:right;font-weight:800;font-size:1.25rem;color:var(--eu);padding-top:14px}
   .tl-track{flex:1;border-left:2px solid var(--line);padding:8px 0 22px 26px;position:relative}
@@ -103,8 +75,6 @@
   .s-force{background:#e6f4ec;color:var(--green)}
   .s-prop{background:#fbf0dd;color:var(--amber)}
   .s-prog{background:#eee9f7;color:var(--violet)}
-
-  /* EXPLORER */
   .filters{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 22px}
   .fbtn{padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:.15s}
   .fbtn:hover{border-color:var(--accent);color:var(--ink)}
@@ -119,8 +89,6 @@
   .card h4{margin:.35em 0 .3em;font-size:1.05rem;letter-spacing:-.01em}
   .card p{margin:0;font-size:.88rem;color:var(--ink-soft)}
   .card .row{display:flex;align-items:center;gap:8px;margin-top:12px}
-
-  /* MODAL */
   .overlay{position:fixed;inset:0;background:rgba(16,24,48,.45);backdrop-filter:blur(2px);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto}
   .overlay.open{display:flex}
   .modal{background:#fff;max-width:760px;width:100%;border-radius:18px;box-shadow:0 24px 70px rgba(10,20,50,.3);overflow:hidden;animation:pop .2s ease}
@@ -130,6 +98,8 @@
   .modal-head h3{margin:.25em 0;font-size:1.5rem;letter-spacing:-.02em;padding-right:40px}
   .close{position:absolute;top:20px;right:22px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:18px;color:var(--ink-soft);line-height:1}
   .close:hover{background:var(--bg-soft)}
+  .kv{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .kv .k{font-size:12px;background:var(--bg-soft);border:1px solid var(--line);padding:4px 10px;border-radius:999px;color:var(--ink-soft)}
   .tabs{display:flex;gap:4px;padding:14px 28px 0;flex-wrap:wrap}
   .tab{padding:9px 15px;border:none;background:none;font-size:14px;font-weight:600;color:var(--ink-soft);cursor:pointer;border-radius:9px 9px 0 0;border-bottom:2px solid transparent}
   .tab.on{color:var(--eu);border-bottom-color:var(--eu)}
@@ -137,13 +107,10 @@
   .panel.on{display:block}
   .panel ul{margin:.2em 0;padding-left:20px}
   .panel li{margin-bottom:7px}
-  .kv{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-  .kv .k{font-size:12px;background:var(--bg-soft);border:1px solid var(--line);padding:4px 10px;border-radius:999px;color:var(--ink-soft)}
   .deps{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
   .dep{font-size:12.5px;padding:6px 11px;border-radius:999px;background:var(--eu-soft);color:var(--eu);font-weight:600;cursor:pointer;border:1px solid #d4e0ff}
   .dep:hover{background:#dbe7ff}
   .doclink{display:inline-block;margin-top:6px;font-weight:600}
-
   footer{padding:40px 0 60px;color:var(--ink-soft);font-size:.85rem}
   .disclaimer{background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px;font-size:.85rem;color:var(--ink-soft);margin-top:18px}
   .notebox{background:#fff7e6;border:1px solid #f0d9a8;color:#8a5a00;border-radius:10px;padding:11px 14px;font-size:.86rem;margin:0 0 16px}
@@ -156,95 +123,71 @@
 
 <header class="nav">
   <div class="nav-inner">
-    <div class="brand"><span class="stars">★</span> EU Tech Sovereignty</div>
+    <div class="brand"><span class="stars">★</span> <span data-i18n="brand"></span></div>
     <nav class="nav-links">
-      <a href="#overview">Overview</a>
-      <a href="#map">How it connects</a>
-      <a href="#timeline">Timeline</a>
-      <a href="#explorer">Explore initiatives</a>
+      <a href="#overview" data-i18n="nav_overview"></a>
+      <a href="#map" data-i18n="nav_map"></a>
+      <a href="#timeline" data-i18n="nav_timeline"></a>
+      <a href="#explorer" data-i18n="nav_explorer"></a>
     </nav>
+    <div class="lang" id="lang">
+      <button data-lang="en">EN</button>
+      <button data-lang="de">DE</button>
+    </div>
   </div>
 </header>
 
-<!-- HERO / OVERVIEW -->
 <section id="overview" class="hero">
   <div class="wrap">
     <div class="hero-grid">
       <div>
-        <span class="eyebrow">Strengthening Europe's Tech Sovereignty</span>
-        <h1>17 initiatives, one goal: digital independence.</h1>
-        <p class="lead">Tech sovereignty is Europe's ability to act independently in the digital world — developing and controlling key technologies, data and infrastructure while reducing reliance on non‑EU providers. Explore how the pieces build on each other, when each arrives, what companies must do, and what it means for you.</p>
-        <div class="pillars">
-          <span class="chip">Competitiveness</span>
-          <span class="chip">Strategic autonomy</span>
-          <span class="chip">Fair markets</span>
-          <span class="chip">Citizens' rights</span>
-          <span class="chip">Innovation</span>
-        </div>
+        <span class="eyebrow" data-i18n="hero_eyebrow"></span>
+        <h1 data-i18n="hero_h1"></h1>
+        <p class="lead" data-i18n="hero_lead"></p>
+        <div class="pillars" id="pillars"></div>
       </div>
       <div class="stat-card">
         <div class="ring">
-          <svg class="donut" viewBox="0 0 42 42" aria-label="80% dependency">
+          <svg class="donut" viewBox="0 0 42 42" aria-label="80%">
             <circle cx="21" cy="21" r="15.9" fill="none" stroke="#e4e9f2" stroke-width="6"></circle>
-            <circle cx="21" cy="21" r="15.9" fill="none" stroke="#003399" stroke-width="6"
-              stroke-dasharray="80 100" stroke-dashoffset="25" stroke-linecap="round"></circle>
+            <circle cx="21" cy="21" r="15.9" fill="none" stroke="#003399" stroke-width="6" stroke-dasharray="80 100" stroke-dashoffset="25" stroke-linecap="round"></circle>
             <text x="21" y="22.5" text-anchor="middle" font-size="9" font-weight="700" fill="#003399">80%+</text>
           </svg>
           <div>
-            <strong>The dependency gap</strong>
-            <p class="muted" style="margin:.3em 0 0;font-size:.9rem">The EU relies on non‑EU countries for over 80% of key digital products, services, infrastructure and IP. Closing that gap is what this whole agenda is about.</p>
+            <strong data-i18n="stat_title"></strong>
+            <p class="muted" style="margin:.3em 0 0;font-size:.9rem" data-i18n="stat_body"></p>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="cards">
-      <div class="mini"><h4>Build capacity</h4><p>Tens of billions invested in compute, chips, quantum and networks — the things Europe must be able to make itself.</p></div>
-      <div class="mini"><h4>Set fair rules</h4><p>Laws like the AI Act, DSA and DMA protect rights and keep markets contestable.</p></div>
-      <div class="mini"><h4>Unlock data &amp; scale</h4><p>Data and start‑up strategies give European firms the fuel and finance to grow at home.</p></div>
-      <div class="mini"><h4>Simplify &amp; secure</h4><p>Newer moves cut red tape and harden supply chains and connected products.</p></div>
-    </div>
+    <div class="cards" id="miniCards"></div>
   </div>
 </section>
 
-<!-- DEPENDENCY MAP -->
 <section id="map">
   <div class="wrap">
-    <span class="eyebrow">How it connects</span>
-    <h2>The dependency map</h2>
-    <p class="lead">Foundations sit at the bottom; strategies and horizontal measures build on top. Click any initiative to highlight what it builds on and what builds on it.</p>
-    <div class="map-help">
-      <span><span class="legend-dot" style="background:#6b4ea0"></span>Framework</span>
-      <span><span class="legend-dot" style="background:#1a73e8"></span>Infrastructure</span>
-      <span><span class="legend-dot" style="background:#003399"></span>Regulation</span>
-      <span><span class="legend-dot" style="background:#1f8a4c"></span>Strategy</span>
-      <span><span class="legend-dot" style="background:#c77d18"></span>Horizontal</span>
-      <span><span class="legend-dot" style="background:#0a8a99"></span>Cloud sovereignty</span>
-      <span style="margin-left:auto"><em>Click a node • click empty space to reset</em></span>
-    </div>
-    <div id="mapWrap">
-      <svg id="edges"></svg>
-      <!-- layers injected by JS -->
-    </div>
+    <span class="eyebrow" data-i18n="map_eyebrow"></span>
+    <h2 data-i18n="map_h2"></h2>
+    <p class="lead" data-i18n="map_lead"></p>
+    <div class="map-help" id="legend"></div>
+    <div id="mapWrap"><svg id="edges"></svg></div>
   </div>
 </section>
 
-<!-- TIMELINE -->
 <section id="timeline">
   <div class="wrap">
-    <span class="eyebrow">When it happens</span>
-    <h2>Timeline 2022 → 2027+</h2>
-    <p class="lead">From the Digital Decade's 2030 targets to the latest 2026 proposals. Click any entry for full detail.</p>
+    <span class="eyebrow" data-i18n="timeline_eyebrow"></span>
+    <h2 data-i18n="timeline_h2"></h2>
+    <p class="lead" data-i18n="timeline_lead"></p>
     <div id="tl" class="tl"></div>
   </div>
 </section>
 
-<!-- EXPLORER -->
 <section id="explorer">
   <div class="wrap">
-    <span class="eyebrow">Go deeper</span>
-    <h2>Explore the initiatives</h2>
-    <p class="lead">Filter by theme, then open any card for what it is, what companies must do, what it means for end users, its dependencies and the official document.</p>
+    <span class="eyebrow" data-i18n="explorer_eyebrow"></span>
+    <h2 data-i18n="explorer_h2"></h2>
+    <p class="lead" data-i18n="explorer_lead"></p>
     <div id="filters" class="filters"></div>
     <div id="grid" class="grid"></div>
   </div>
@@ -252,322 +195,481 @@
 
 <footer>
   <div class="wrap">
-    <strong>EU Tech Sovereignty — Interactive Explorer</strong>
-    <p>Built from the European Commission's "Strengthening Europe's Tech Sovereignty" policy pages (digital-strategy.ec.europa.eu) and the official source documents. Figures and dates compiled June 2026.</p>
-    <div class="disclaimer">This is an independent explanatory tool, not an official EU publication. Dates for proposed measures may change during the legislative process. For binding text, always consult the official document linked in each initiative.</div>
+    <strong data-i18n="footer_strong"></strong>
+    <p data-i18n="footer_p"></p>
+    <div class="disclaimer" data-i18n="footer_disclaimer"></div>
   </div>
 </footer>
 
-<!-- MODAL -->
-<div class="overlay" id="overlay">
-  <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
-</div>
+<div class="overlay" id="overlay"><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
 
 <script>
+const L=(en,de)=>({en,de});
+let lang = (()=>{try{return localStorage.getItem('eutslang')||'en'}catch(e){return 'en'}})();
+
+const colorByKey={framework:"#6b4ea0",infra:"#1a73e8",regulation:"#003399",strategy:"#1f8a4c",cloud:"#0a8a99",horizontal:"#c77d18"};
+
+const UI = {
+  en:{
+    brand:"EU Tech Sovereignty",
+    nav_overview:"Overview", nav_map:"How it connects", nav_timeline:"Timeline", nav_explorer:"Explore initiatives",
+    hero_eyebrow:"Strengthening Europe's Tech Sovereignty",
+    hero_h1:"Many initiatives, one goal: digital independence.",
+    hero_lead:"Tech sovereignty is Europe's ability to act independently in the digital world — developing and controlling key technologies, data and infrastructure while reducing reliance on non‑EU providers. Explore how the pieces build on each other, when each arrives, what companies must do, and what it means for you.",
+    pillars:["Competitiveness","Strategic autonomy","Fair markets","Citizens' rights","Innovation"],
+    stat_title:"The dependency gap",
+    stat_body:"The EU relies on non‑EU countries for over 80% of key digital products, services, infrastructure and IP. Closing that gap is what this whole agenda is about.",
+    mini:[
+      {h:"Build capacity",p:"Tens of billions invested in compute, chips, quantum and networks — the things Europe must be able to make itself."},
+      {h:"Set fair rules",p:"Laws like the AI Act, DSA and DMA protect rights and keep markets contestable."},
+      {h:"Unlock data & scale",p:"Data and start‑up strategies give European firms the fuel and finance to grow at home."},
+      {h:"Simplify & secure",p:"Newer moves cut red tape and harden supply chains and connected products."}
+    ],
+    map_eyebrow:"How it connects", map_h2:"The dependency map",
+    map_lead:"Foundations sit at the bottom; strategies and horizontal measures build on top. Click any initiative to highlight what it builds on and what builds on it.",
+    map_hint:"Click a node • click empty space to reset",
+    cluster:{framework:"Framework",infra:"Infrastructure",regulation:"Regulation",strategy:"Strategy",cloud:"Cloud sovereignty",horizontal:"Horizontal"},
+    layers:["Foundation — overarching framework","Infrastructure & strategic technologies","Core regulation — data, AI, markets, cyber","Strategies — orchestration & adoption","Horizontal — simplification, security, openness"],
+    timeline_eyebrow:"When it happens", timeline_h2:"Timeline 2022 → 2027+",
+    timeline_lead:"From the Digital Decade's 2030 targets to the latest 2026 proposals. Click any entry for full detail.",
+    explorer_eyebrow:"Go deeper", explorer_h2:"Explore the initiatives",
+    explorer_lead:"Filter by theme, then open any card for what it is, what companies must do, what it means for end users, its dependencies and the official document.",
+    all:"All",
+    tab_what:"What it is", tab_company:"For companies", tab_user:"For end users", tab_deps:"Dependencies",
+    h_company:"What a company needs to do", h_user:"What it means for end users", h_deps:"How it connects",
+    open_doc:"Open official document ↗", note_label:"⚠ Note:",
+    builds_on:(n)=>`↳ builds on ${n}`, rev:(n)=>`${n} builds on this ↰`,
+    deps_what:"What depends on it:", no_prereq:"No prerequisites — this is a foundational measure.",
+    footer_strong:"EU Tech Sovereignty — Interactive Explorer",
+    footer_p:"Built from the European Commission's “Strengthening Europe's Tech Sovereignty” policy pages (digital-strategy.ec.europa.eu) and the official source documents. Figures and dates compiled June 2026.",
+    footer_disclaimer:"This is an independent explanatory tool, not an official EU publication. Dates for proposed measures may change during the legislative process. For binding text, always consult the official document linked in each initiative."
+  },
+  de:{
+    brand:"EU-Technologiesouveränität",
+    nav_overview:"Überblick", nav_map:"Zusammenhänge", nav_timeline:"Zeitleiste", nav_explorer:"Initiativen erkunden",
+    hero_eyebrow:"Stärkung der Technologiesouveränität Europas",
+    hero_h1:"Viele Initiativen, ein Ziel: digitale Unabhängigkeit.",
+    hero_lead:"Technologiesouveränität ist Europas Fähigkeit, in der digitalen Welt unabhängig zu handeln – Schlüsseltechnologien, Daten und Infrastruktur selbst zu entwickeln und zu kontrollieren und zugleich die Abhängigkeit von Nicht-EU-Anbietern zu verringern. Entdecken Sie, wie die Bausteine aufeinander aufbauen, wann sie kommen, was Unternehmen tun müssen und was es für Sie bedeutet.",
+    pillars:["Wettbewerbsfähigkeit","Strategische Autonomie","Faire Märkte","Bürgerrechte","Innovation"],
+    stat_title:"Die Abhängigkeitslücke",
+    stat_body:"Die EU bezieht über 80 % zentraler digitaler Produkte, Dienste, Infrastruktur und Schutzrechte aus Nicht-EU-Ländern. Diese Lücke zu schließen, ist das Ziel der gesamten Agenda.",
+    mini:[
+      {h:"Kapazität aufbauen",p:"Zig Milliarden in Rechenleistung, Chips, Quanten und Netze – das, was Europa selbst herstellen können muss."},
+      {h:"Faire Regeln setzen",p:"Gesetze wie die KI-Verordnung, der DSA und der DMA schützen Rechte und halten Märkte bestreitbar."},
+      {h:"Daten & Skalierung erschließen",p:"Daten- und Start-up-Strategien geben europäischen Firmen Treibstoff und Finanzierung, um zu Hause zu wachsen."},
+      {h:"Vereinfachen & absichern",p:"Neuere Schritte bauen Bürokratie ab und härten Lieferketten und vernetzte Produkte."}
+    ],
+    map_eyebrow:"Zusammenhänge", map_h2:"Die Abhängigkeitskarte",
+    map_lead:"Grundlagen liegen unten; Strategien und Querschnittsmaßnahmen bauen darauf auf. Klicken Sie eine Initiative an, um hervorzuheben, worauf sie aufbaut und was auf ihr aufbaut.",
+    map_hint:"Knoten anklicken • leere Fläche klicken zum Zurücksetzen",
+    cluster:{framework:"Rahmen",infra:"Infrastruktur",regulation:"Regulierung",strategy:"Strategie",cloud:"Cloud-Souveränität",horizontal:"Querschnitt"},
+    layers:["Grundlage – übergeordneter Rahmen","Infrastruktur & strategische Technologien","Kernregulierung – Daten, KI, Märkte, Cyber","Strategien – Orchestrierung & Verbreitung","Querschnitt – Vereinfachung, Sicherheit, Offenheit"],
+    timeline_eyebrow:"Zeitlicher Ablauf", timeline_h2:"Zeitleiste 2022 → 2027+",
+    timeline_lead:"Von den 2030-Zielen der Digitalen Dekade bis zu den jüngsten Vorschlägen von 2026. Klicken Sie einen Eintrag für alle Details an.",
+    explorer_eyebrow:"Mehr erfahren", explorer_h2:"Die Initiativen erkunden",
+    explorer_lead:"Nach Thema filtern und dann eine Karte öffnen – für Worum es geht, Was Unternehmen tun müssen, Was es für Endnutzer bedeutet, die Abhängigkeiten und das offizielle Dokument.",
+    all:"Alle",
+    tab_what:"Worum es geht", tab_company:"Für Unternehmen", tab_user:"Für Endnutzer", tab_deps:"Abhängigkeiten",
+    h_company:"Was ein Unternehmen tun muss", h_user:"Was es für Endnutzer bedeutet", h_deps:"Zusammenhänge",
+    open_doc:"Offizielles Dokument öffnen ↗", note_label:"⚠ Hinweis:",
+    builds_on:(n)=>`↳ baut auf ${n} auf`, rev:(n)=>`${n} baut hierauf auf ↰`,
+    deps_what:"Was darauf aufbaut:", no_prereq:"Keine Voraussetzungen – eine grundlegende Maßnahme.",
+    footer_strong:"EU-Technologiesouveränität – interaktiver Explorer",
+    footer_p:"Erstellt auf Basis der Politikseiten der Europäischen Kommission „Strengthening Europe's Tech Sovereignty“ (digital-strategy.ec.europa.eu) und der offiziellen Quelldokumente. Zahlen und Daten zusammengestellt im Juni 2026.",
+    footer_disclaimer:"Dies ist ein unabhängiges Erklärwerkzeug, keine offizielle EU-Veröffentlichung. Daten für vorgeschlagene Maßnahmen können sich im Gesetzgebungsverfahren ändern. Für verbindliche Texte konsultieren Sie stets das in jeder Initiative verlinkte offizielle Dokument."
+  }
+};
+
 const DATA = [
-  {id:"digitalDecade",name:"Digital Decade Policy Programme",short:"Digital Decade",cluster:"Framework",layer:0,color:"#6b4ea0",
-   date:"Dec 2022",year:2022,status:"force",statusLabel:"In force",
-   what:"The overarching framework setting the EU's measurable 2030 targets for digital transformation — across skills, infrastructure, business and public services — with an annual monitoring cycle that holds Member States and the Commission jointly accountable.",
-   company:["Benefit from connectivity and digitalisation support tied to national roadmaps","Targets (e.g. cloud/AI/big-data uptake) steer EU and national funding you can tap","SMEs are expected to reach at least a basic level of digital intensity"],
-   user:["Gigabit connectivity for all and 5G everywhere by 2030","Key public services 100% online, plus e-health records and an EU digital identity","A more digitally skilled workforce (target: 80% of adults with basic digital skills)"],
-   buildsOn:[],
-   doc:"Decision (EU) 2022/2481",docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022D2481"},
+  {id:"digitalDecade",cluster:"framework",layer:0,date:"Dec 2022",year:2022,status:"force",
+   name:L("Digital Decade Policy Programme","Politikprogramm Digitale Dekade"),
+   short:L("Digital Decade","Digitale Dekade"),
+   statusLabel:L("In force","In Kraft"),
+   what:L("The overarching framework setting the EU's measurable 2030 targets for digital transformation — across skills, infrastructure, business and public services — with an annual monitoring cycle that holds Member States and the Commission jointly accountable.",
+          "Der übergeordnete Rahmen, der die messbaren EU-Ziele für 2030 zur digitalen Transformation festlegt – in den Bereichen Kompetenzen, Infrastruktur, Wirtschaft und öffentliche Dienste – mit einem jährlichen Monitoring, das Mitgliedstaaten und Kommission gemeinsam in die Verantwortung nimmt."),
+   company:L(["Benefit from connectivity and digitalisation support tied to national roadmaps","Targets (e.g. cloud/AI/big-data uptake) steer EU and national funding you can tap","SMEs are expected to reach at least a basic level of digital intensity"],
+            ["Profitieren Sie von Konnektivitäts- und Digitalisierungsförderung im Rahmen nationaler Fahrpläne","Ziele (z. B. Nutzung von Cloud/KI/Big Data) lenken EU- und nationale Fördermittel","KMU sollen mindestens ein grundlegendes Niveau digitaler Intensität erreichen"]),
+   user:L(["Gigabit connectivity for all and 5G everywhere by 2030","Key public services 100% online, plus e-health records and an EU digital identity","A more digitally skilled workforce (target: 80% of adults with basic digital skills)"],
+          ["Gigabit-Konnektivität für alle und 5G überall bis 2030","Wichtige öffentliche Dienste zu 100 % online, plus E-Health-Akten und eine EU-weite digitale Identität","Eine digital kompetentere Bevölkerung (Ziel: 80 % der Erwachsenen mit digitalen Grundkompetenzen)"]),
+   buildsOn:[], doc:L("Decision (EU) 2022/2481","Beschluss (EU) 2022/2481"),
+   docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022D2481"},
 
-  {id:"chips",name:"European Chips Act",short:"Chips Act",cluster:"Infrastructure",layer:1,color:"#1a73e8",
-   date:"Sep 2023",year:2023,status:"force",statusLabel:"In force",
-   what:"Reinforces Europe's semiconductor ecosystem across research, design, manufacturing and packaging to cut strategic dependencies and reach a 20% global market share by 2030. Built on three pillars: Chips for Europe, security of supply, and crisis monitoring.",
-   company:["Apply for funding, pilot-line access and competence-centre support (especially SMEs and start-ups)","Large manufacturers can seek 'integrated production facility' / 'open EU foundry' status and State aid","Over €31.5bn of public and private investment approved across first-of-a-kind facilities"],
-   user:["More resilient supply of chips that power cars, phones, medical devices and appliances","Fewer shortage-driven product delays and price spikes","More high-tech manufacturing jobs in Europe"],
-   buildsOn:["digitalDecade"],
-   doc:"Regulation (EU) 2023/1781",docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1781"},
+  {id:"chips",cluster:"infra",layer:1,date:"Sep 2023",year:2023,status:"force",
+   name:L("European Chips Act","Europäisches Chip-Gesetz"), short:L("Chips Act","Chip-Gesetz"),
+   statusLabel:L("In force","In Kraft"),
+   what:L("Reinforces Europe's semiconductor ecosystem across research, design, manufacturing and packaging to cut strategic dependencies and reach a 20% global market share by 2030. Built on three pillars: Chips for Europe, security of supply, and crisis monitoring.",
+          "Stärkt das Halbleiter-Ökosystem Europas über Forschung, Design, Fertigung und Packaging hinweg, um strategische Abhängigkeiten zu verringern und bis 2030 einen globalen Marktanteil von 20 % zu erreichen. Es ruht auf drei Säulen: Chips für Europa, Versorgungssicherheit und Krisenüberwachung."),
+   company:L(["Apply for funding, pilot-line access and competence-centre support (especially SMEs and start-ups)","Large manufacturers can seek 'integrated production facility' / 'open EU foundry' status and State aid","Over €31.5bn of public and private investment approved across first-of-a-kind facilities"],
+            ["Förderung, Zugang zu Pilotlinien und Kompetenzzentren beantragen (v. a. KMU und Start-ups)","Großhersteller können den Status 'integrierte Produktionsstätte' / 'offene EU-Gießerei' und staatliche Beihilfen beantragen","Über 31,5 Mrd. € an öffentlichen und privaten Investitionen für Erstanlagen genehmigt"]),
+   user:L(["More resilient supply of chips that power cars, phones, medical devices and appliances","Fewer shortage-driven product delays and price spikes","More high-tech manufacturing jobs in Europe"],
+          ["Widerstandsfähigere Versorgung mit Chips für Autos, Telefone, Medizingeräte und Haushaltsgeräte","Weniger durch Engpässe bedingte Lieferverzögerungen und Preissprünge","Mehr Hightech-Arbeitsplätze in Europa"]),
+   buildsOn:["digitalDecade"], doc:L("Regulation (EU) 2023/1781","Verordnung (EU) 2023/1781"),
+   docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R1781"},
 
-  {id:"aiFactories",name:"AI Factories",short:"AI Factories",cluster:"Infrastructure",layer:1,color:"#1a73e8",
-   date:"Dec 2024",year:2024,status:"prog",statusLabel:"Rolling out",
-   what:"Supercomputing ecosystems built on EuroHPC that give researchers, start-ups and SMEs access to the compute and data needed to train cutting-edge AI. 19 AI Factories and 13 antennas are operational, with up to 5 AI Gigafactories planned via the €20bn InvestAI facility.",
-   company:["Start-ups and SMEs apply via EuroHPC for subsidised access to AI-optimised supercomputers","Train and deploy large models in Europe instead of depending on non-EU cloud","Gigafactories (100,000+ AI processors each) will enable trillion-parameter models"],
-   user:["Indirect: enables European AI products and services across health, climate, finance and more","Keeps strategic AI compute capacity on European soil"],
-   buildsOn:["chips","digitalDecade"],
-   doc:"EuroHPC Regulation (EU) 2021/1173 + amendment",docUrl:"https://digital-strategy.ec.europa.eu/en/policies/ai-factories"},
+  {id:"aiFactories",cluster:"infra",layer:1,date:"Dec 2024",year:2024,status:"prog",
+   name:L("AI Factories","KI-Fabriken"), short:L("AI Factories","KI-Fabriken"),
+   statusLabel:L("Rolling out","Im Aufbau"),
+   what:L("Supercomputing ecosystems built on EuroHPC that give researchers, start-ups and SMEs access to the compute and data needed to train cutting-edge AI. 19 AI Factories and 13 antennas are operational, with up to 5 AI Gigafactories planned via the €20bn InvestAI facility.",
+          "Supercomputing-Ökosysteme auf Basis von EuroHPC, die Forschenden, Start-ups und KMU Zugang zu der Rechenleistung und den Daten geben, die zum Training modernster KI nötig sind. 19 KI-Fabriken und 13 Antennen sind in Betrieb; über die 20-Mrd.-€-Fazilität InvestAI sind bis zu fünf KI-Gigafabriken geplant."),
+   company:L(["Start-ups and SMEs apply via EuroHPC for subsidised access to AI-optimised supercomputers","Train and deploy large models in Europe instead of depending on non-EU cloud","Gigafactories (100,000+ AI processors each) will enable trillion-parameter models"],
+            ["Start-ups und KMU beantragen über EuroHPC subventionierten Zugang zu KI-optimierten Supercomputern","Große Modelle in Europa trainieren und einsetzen statt in Abhängigkeit von Nicht-EU-Cloud","Gigafabriken (je über 100.000 KI-Prozessoren) ermöglichen Modelle mit Billionen Parametern"]),
+   user:L(["Indirect: enables European AI products and services across health, climate, finance and more","Keeps strategic AI compute capacity on European soil"],
+          ["Indirekt: ermöglicht europäische KI-Produkte und -Dienste in Gesundheit, Klima, Finanzen u. v. m.","Hält strategische KI-Rechenkapazität auf europäischem Boden"]),
+   buildsOn:["chips","digitalDecade"], doc:L("EuroHPC Regulation (EU) 2021/1173 + amendment","EuroHPC-Verordnung (EU) 2021/1173 + Änderung"),
+   docUrl:"https://digital-strategy.ec.europa.eu/en/policies/ai-factories"},
 
-  {id:"dna",name:"Digital Networks Act",short:"Digital Networks Act",cluster:"Infrastructure",layer:1,color:"#1a73e8",
-   date:"Jan 2026",year:2026,status:"prop",statusLabel:"Proposed",
-   what:"Modernises and simplifies EU connectivity rules by merging four legal acts into one Regulation. Introduces a 'Single Passport' authorisation, EU-level satellite spectrum, a copper-to-fibre transition and an EU network preparedness plan.",
-   company:["Telecom operators get single-Member-State authorisation and simplified cross-border operation","Longer spectrum licences and spectrum-sharing to make investment more attractive","Mandatory national copper-to-fibre transition plans"],
-   user:["Faster, more widely available fibre and 5G","More resilient networks against outages, disasters and interference","Consumer protections retained throughout the transition"],
-   buildsOn:["digitalDecade"],
-   doc:"Proposal COM(2026) 16",docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52026PC0016"},
+  {id:"dna",cluster:"infra",layer:1,date:"Jan 2026",year:2026,status:"prop",
+   name:L("Digital Networks Act","Gesetz über digitale Netze"), short:L("Digital Networks Act","Gesetz über digitale Netze"),
+   statusLabel:L("Proposed","Vorschlag"),
+   what:L("Modernises and simplifies EU connectivity rules by merging four legal acts into one Regulation. Introduces a 'Single Passport' authorisation, EU-level satellite spectrum, a copper-to-fibre transition and an EU network preparedness plan.",
+          "Modernisiert und vereinfacht die EU-Konnektivitätsregeln, indem es vier Rechtsakte zu einer Verordnung zusammenführt. Es führt eine 'Single-Passport'-Genehmigung, eine EU-weite Satellitenspektrum-Genehmigung, einen Übergang von Kupfer zu Glasfaser und einen EU-Plan zur Netzbereitschaft ein."),
+   company:L(["Telecom operators get single-Member-State authorisation and simplified cross-border operation","Longer spectrum licences and spectrum-sharing to make investment more attractive","Mandatory national copper-to-fibre transition plans"],
+            ["Telekombetreiber erhalten eine Genehmigung in nur einem Mitgliedstaat und einen vereinfachten grenzüberschreitenden Betrieb","Längere Spektrumslizenzen und Spektrum-Sharing machen Investitionen attraktiver","Verpflichtende nationale Pläne für den Übergang von Kupfer zu Glasfaser"]),
+   user:L(["Faster, more widely available fibre and 5G","More resilient networks against outages, disasters and interference","Consumer protections retained throughout the transition"],
+          ["Schnellere, breiter verfügbare Glasfaser und 5G","Widerstandsfähigere Netze gegen Ausfälle, Katastrophen und Störungen","Verbraucherschutz bleibt während des Übergangs erhalten"]),
+   buildsOn:["digitalDecade"], doc:L("Proposal COM(2026) 16","Vorschlag COM(2026) 16"),
+   docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52026PC0016"},
 
-  {id:"quantum",name:"Quantum Europe Strategy",short:"Quantum Strategy",cluster:"Infrastructure",layer:1,color:"#1a73e8",
-   date:"Jul 2025",year:2025,status:"prog",statusLabel:"Strategy",
-   what:"Aims to make Europe a global quantum leader by 2030 across research, infrastructure, ecosystem, dual-use/space, and skills — turning strong science into market-ready technology and reducing fragmentation across Member States.",
-   company:["Access pan-European quantum pilot lines and test facilities (QU-PILOT, QU-TEST)","Start-ups and scale-ups can tap EIC funding and scale-up support","Opportunities in dual-use, space and post-quantum security supply chains"],
-   user:["Future quantum-secure communications protecting sensitive data","Advances in sensing, navigation and healthcare diagnostics"],
-   buildsOn:["chips","aiFactories"],
-   doc:"Communication COM(2025) 363",docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52025DC0363"},
+  {id:"quantum",cluster:"infra",layer:1,date:"Jul 2025",year:2025,status:"prog",
+   name:L("Quantum Europe Strategy","Quantum-Europa-Strategie"), short:L("Quantum Strategy","Quantum-Strategie"),
+   statusLabel:L("Strategy","Strategie"),
+   what:L("Aims to make Europe a global quantum leader by 2030 across research, infrastructure, ecosystem, dual-use/space and skills — turning strong science into market-ready technology and reducing fragmentation across Member States.",
+          "Soll Europa bis 2030 zur globalen Quantenführung verhelfen – über Forschung, Infrastruktur, Ökosystem, Dual-Use/Weltraum und Kompetenzen –, indem starke Wissenschaft in marktreife Technologie überführt und die Fragmentierung zwischen den Mitgliedstaaten verringert wird."),
+   company:L(["Access pan-European quantum pilot lines and test facilities (QU-PILOT, QU-TEST)","Start-ups and scale-ups can tap EIC funding and scale-up support","Opportunities in dual-use, space and post-quantum security supply chains"],
+            ["Zugang zu europaweiten Quanten-Pilotlinien und Testanlagen (QU-PILOT, QU-TEST)","Start-ups und Scale-ups können EIC-Förderung und Scale-up-Unterstützung nutzen","Chancen in Dual-Use-, Weltraum- und Post-Quanten-Sicherheitslieferketten"]),
+   user:L(["Future quantum-secure communications protecting sensitive data","Advances in sensing, navigation and healthcare diagnostics"],
+          ["Künftig quantensichere Kommunikation zum Schutz sensibler Daten","Fortschritte bei Sensorik, Navigation und medizinischer Diagnostik"]),
+   buildsOn:["chips","aiFactories"], doc:L("Communication COM(2025) 363","Mitteilung COM(2025) 363"),
+   docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52025DC0363"},
 
-  {id:"aiAct",name:"AI Act",short:"AI Act",cluster:"Regulation",layer:2,color:"#003399",
-   date:"Aug 2024",year:2024,status:"force",statusLabel:"In force (phasing)",
-   what:"The world's first comprehensive AI law. Regulates AI by risk level — banning unacceptable uses, imposing strict duties on high-risk systems, transparency for limited-risk, and specific rules for general-purpose AI models.",
-   company:["Map your AI systems to risk tiers; prohibited practices already banned","High-risk systems need risk management, data governance, documentation, human oversight and conformity assessment (CE marking)","General-purpose AI providers face transparency, copyright and technical-documentation duties; systemic models face more"],
-   user:["Protection from manipulative and social-scoring systems","Right to know when you're interacting with AI; AI-generated content is labelled","A route to complain about harmful AI decisions"],
-   buildsOn:["digitalDecade"],
-   doc:"Regulation (EU) 2024/1689",docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689"},
+  {id:"aiAct",cluster:"regulation",layer:2,date:"Aug 2024",year:2024,status:"force",
+   name:L("AI Act","KI-Verordnung"), short:L("AI Act","KI-Verordnung"),
+   statusLabel:L("In force (phasing)","In Kraft (gestaffelt)"),
+   what:L("The world's first comprehensive AI law. Regulates AI by risk level — banning unacceptable uses, imposing strict duties on high-risk systems, transparency for limited-risk, and specific rules for general-purpose AI models.",
+          "Das weltweit erste umfassende KI-Gesetz. Es reguliert KI nach Risikostufen – verbietet inakzeptable Anwendungen, stellt strenge Pflichten an Hochrisiko-Systeme, sieht Transparenz für begrenztes Risiko vor und enthält besondere Regeln für KI-Modelle mit allgemeinem Verwendungszweck."),
+   company:L(["Map your AI systems to risk tiers; prohibited practices already banned","High-risk systems need risk management, data governance, documentation, human oversight and conformity assessment (CE marking)","General-purpose AI providers face transparency, copyright and technical-documentation duties; systemic models face more"],
+            ["Ordnen Sie Ihre KI-Systeme den Risikostufen zu; verbotene Praktiken sind bereits untersagt","Hochrisiko-Systeme brauchen Risikomanagement, Daten-Governance, Dokumentation, menschliche Aufsicht und Konformitätsbewertung (CE-Kennzeichnung)","Anbieter von Allzweck-KI unterliegen Transparenz-, Urheberrechts- und Dokumentationspflichten; systemische Modelle weiteren"]),
+   user:L(["Protection from manipulative and social-scoring systems","Right to know when you're interacting with AI; AI-generated content is labelled","A route to complain about harmful AI decisions"],
+          ["Schutz vor manipulativen und Social-Scoring-Systemen","Recht zu erfahren, wann man mit KI interagiert; KI-generierte Inhalte werden gekennzeichnet","Ein Weg, sich über schädliche KI-Entscheidungen zu beschweren"]),
+   buildsOn:["digitalDecade"], doc:L("Regulation (EU) 2024/1689","Verordnung (EU) 2024/1689"),
+   docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689"},
 
-  {id:"dataAct",name:"Data Act",short:"Data Act",cluster:"Regulation",layer:2,color:"#003399",
-   date:"Sep 2025",year:2025,status:"force",statusLabel:"Applies Sep 2025",
-   what:"Harmonises rules on access to and use of data from connected products (IoT), ensures fair B2B data sharing, makes switching cloud providers easier and lets public bodies access private data in emergencies.",
-   company:["Makers of connected products must let users access and share the data they generate","Use fair contract terms; model clauses are provided","Cloud/edge providers must remove barriers and (gradually) switching charges"],
-   user:["Access the data your smart devices, cars and machines produce","Share it with third parties such as independent repairers","Switch between cloud services more easily"],
-   buildsOn:["digitalDecade"],
-   doc:"Regulation (EU) 2023/2854",docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R2854"},
+  {id:"dataAct",cluster:"regulation",layer:2,date:"Sep 2025",year:2025,status:"force",
+   name:L("Data Act","Datengesetz"), short:L("Data Act","Datengesetz"),
+   statusLabel:L("Applies Sep 2025","Gilt ab Sep. 2025"),
+   what:L("Harmonises rules on access to and use of data from connected products (IoT), ensures fair B2B data sharing, makes switching cloud providers easier and lets public bodies access private data in emergencies.",
+          "Harmonisiert die Regeln für den Zugang zu und die Nutzung von Daten vernetzter Produkte (IoT), sorgt für faire B2B-Datenteilung, erleichtert den Wechsel des Cloud-Anbieters und erlaubt öffentlichen Stellen in Notlagen den Zugriff auf private Daten."),
+   company:L(["Makers of connected products must let users access and share the data they generate","Use fair contract terms; model clauses are provided","Cloud/edge providers must remove barriers and (gradually) switching charges"],
+            ["Hersteller vernetzter Produkte müssen Nutzern Zugang zu den erzeugten Daten und deren Weitergabe ermöglichen","Faire Vertragsbedingungen verwenden; Musterklauseln werden bereitgestellt","Cloud-/Edge-Anbieter müssen Hürden und (schrittweise) Wechselgebühren abbauen"]),
+   user:L(["Access the data your smart devices, cars and machines produce","Share it with third parties such as independent repairers","Switch between cloud services more easily"],
+          ["Zugriff auf die Daten, die Ihre Smart-Geräte, Autos und Maschinen erzeugen","Weitergabe an Dritte wie unabhängige Werkstätten","Einfacherer Wechsel zwischen Cloud-Diensten"]),
+   buildsOn:["digitalDecade"], doc:L("Regulation (EU) 2023/2854","Verordnung (EU) 2023/2854"),
+   docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32023R2854"},
 
-  {id:"dsa",name:"Digital Services Act",short:"DSA",cluster:"Regulation",layer:2,color:"#003399",
-   date:"Feb 2024",year:2024,status:"force",statusLabel:"In force",
-   what:"Sets clear obligations for online intermediaries and platforms to tackle illegal content, increase transparency and protect users — with the strictest rules for Very Large Online Platforms and search engines.",
-   company:["Platforms must run notice-and-action systems and publish transparency reports","Bans on targeting ads to minors or using sensitive data for ad targeting","VLOPs (45m+ EU users) face systemic-risk assessments and independent audits"],
-   user:["Easier reporting of illegal content and appeals against removals","Less manipulative design and profiling-based feeds you can switch off","More transparency about why you see content and ads"],
-   buildsOn:["digitalDecade"],
-   doc:"Regulation (EU) 2022/2065",docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065"},
+  {id:"dsa",cluster:"regulation",layer:2,date:"Feb 2024",year:2024,status:"force",
+   name:L("Digital Services Act","Gesetz über digitale Dienste"), short:L("DSA","DSA"),
+   statusLabel:L("In force","In Kraft"),
+   what:L("Sets clear obligations for online intermediaries and platforms to tackle illegal content, increase transparency and protect users — with the strictest rules for Very Large Online Platforms and search engines.",
+          "Legt klare Pflichten für Online-Vermittler und Plattformen fest, um illegale Inhalte zu bekämpfen, die Transparenz zu erhöhen und Nutzer zu schützen – mit den strengsten Regeln für sehr große Online-Plattformen und Suchmaschinen."),
+   company:L(["Platforms must run notice-and-action systems and publish transparency reports","Bans on targeting ads to minors or using sensitive data for ad targeting","VLOPs (45m+ EU users) face systemic-risk assessments and independent audits"],
+            ["Plattformen müssen Melde- und Abhilfeverfahren betreiben und Transparenzberichte veröffentlichen","Verbot zielgerichteter Werbung gegenüber Minderjährigen oder mit sensiblen Daten","VLOPs (45 Mio.+ EU-Nutzer) müssen systemische Risiken bewerten und unabhängige Audits durchführen"]),
+   user:L(["Easier reporting of illegal content and appeals against removals","Less manipulative design and profiling-based feeds you can switch off","More transparency about why you see content and ads"],
+          ["Einfacheres Melden illegaler Inhalte und Widerspruch gegen Entfernungen","Weniger manipulatives Design und abschaltbare profilbasierte Feeds","Mehr Transparenz, warum Sie Inhalte und Werbung sehen"]),
+   buildsOn:["digitalDecade"], doc:L("Regulation (EU) 2022/2065","Verordnung (EU) 2022/2065"),
+   docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065"},
 
-  {id:"dma",name:"Digital Markets Act",short:"DMA",cluster:"Regulation",layer:2,color:"#003399",
-   date:"Mar 2024",year:2024,status:"force",statusLabel:"In force",
-   what:"Imposes ex-ante 'do's and don'ts' on large platforms designated as gatekeepers to ensure fair competition and contestability in digital markets.",
-   company:["Gatekeepers must allow interoperability, data access and third-party promotion","No self-preferencing or combining personal data across services without consent","Business users gain access to the data they generate and freedom to reach customers"],
-   user:["Choice: alternative app stores, uninstalling pre-installed apps, choosing your browser","Interoperable messaging between services","More competition and lower prices"],
-   buildsOn:["digitalDecade"],
-   doc:"Regulation (EU) 2022/1925",docUrl:"https://digital-markets-act.ec.europa.eu/index_en"},
+  {id:"dma",cluster:"regulation",layer:2,date:"Mar 2024",year:2024,status:"force",
+   name:L("Digital Markets Act","Gesetz über digitale Märkte"), short:L("DMA","DMA"),
+   statusLabel:L("In force","In Kraft"),
+   what:L("Imposes ex-ante 'do's and don'ts' on large platforms designated as gatekeepers to ensure fair competition and contestability in digital markets.",
+          "Erlegt großen, als Torwächter benannten Plattformen vorab geltende 'Gebote und Verbote' auf, um fairen Wettbewerb und Bestreitbarkeit in digitalen Märkten zu sichern."),
+   company:L(["Gatekeepers must allow interoperability, data access and third-party promotion","No self-preferencing or combining personal data across services without consent","Business users gain access to the data they generate and freedom to reach customers"],
+            ["Torwächter müssen Interoperabilität, Datenzugang und Drittanbieter-Werbung zulassen","Keine Selbstbevorzugung und kein dienstübergreifendes Zusammenführen personenbezogener Daten ohne Einwilligung","Gewerbliche Nutzer erhalten Zugang zu den erzeugten Daten und Freiheit, Kunden zu erreichen"]),
+   user:L(["Choice: alternative app stores, uninstalling pre-installed apps, choosing your browser","Interoperable messaging between services","More competition and lower prices"],
+          ["Wahlfreiheit: alternative App-Stores, Deinstallieren vorinstallierter Apps, Browserwahl","Interoperable Messaging-Dienste","Mehr Wettbewerb und niedrigere Preise"]),
+   buildsOn:["digitalDecade"], doc:L("Regulation (EU) 2022/1925","Verordnung (EU) 2022/1925"),
+   docUrl:"https://digital-markets-act.ec.europa.eu/index_en"},
 
-  {id:"cra",name:"Cyber Resilience Act",short:"Cyber Resilience Act",cluster:"Regulation",layer:2,color:"#003399",
-   date:"Dec 2024",year:2024,status:"force",statusLabel:"Applies 2027",
-   what:"Introduces mandatory cybersecurity requirements for products with digital elements — security by design, vulnerability handling and updates across the whole product lifecycle.",
-   company:["Build security in by design and default; manage vulnerabilities and ship updates","Report actively exploited vulnerabilities and serious incidents (from 2026)","Meet essential requirements and CE marking; full compliance by 2027"],
-   user:["Connected products that are secure out of the box","Guaranteed security updates for a stated support period","Clearer information about a product's security"],
-   buildsOn:["digitalDecade"],
-   doc:"Regulation (EU) 2024/2847",docUrl:"https://digital-strategy.ec.europa.eu/en/library/cyber-resilience-act"},
+  {id:"cra",cluster:"regulation",layer:2,date:"Dec 2024",year:2024,status:"force",
+   name:L("Cyber Resilience Act","Cyberresilienz-Verordnung"), short:L("Cyber Resilience Act","Cyberresilienz-Verordnung"),
+   statusLabel:L("Applies 2027","Gilt ab 2027"),
+   what:L("Introduces mandatory cybersecurity requirements for products with digital elements — security by design, vulnerability handling and updates across the whole product lifecycle.",
+          "Führt verpflichtende Cybersicherheitsanforderungen für Produkte mit digitalen Elementen ein – Sicherheit durch Design, Schwachstellenbehandlung und Updates über den gesamten Produktlebenszyklus."),
+   company:L(["Build security in by design and default; manage vulnerabilities and ship updates","Report actively exploited vulnerabilities and serious incidents (from 2026)","Meet essential requirements and CE marking; full compliance by 2027"],
+            ["Sicherheit von Grund auf einbauen; Schwachstellen verwalten und Updates ausliefern","Aktiv ausgenutzte Schwachstellen und schwere Vorfälle melden (ab 2026)","Wesentliche Anforderungen und CE-Kennzeichnung erfüllen; volle Konformität bis 2027"]),
+   user:L(["Connected products that are secure out of the box","Guaranteed security updates for a stated support period","Clearer information about a product's security"],
+          ["Vernetzte Produkte, die ab Werk sicher sind","Garantierte Sicherheitsupdates über einen angegebenen Unterstützungszeitraum","Klarere Informationen zur Sicherheit eines Produkts"]),
+   buildsOn:["digitalDecade"], doc:L("Regulation (EU) 2024/2847","Verordnung (EU) 2024/2847"),
+   docUrl:"https://digital-strategy.ec.europa.eu/en/library/cyber-resilience-act"},
 
-  {id:"aiContinent",name:"AI Continent Action Plan",short:"AI Continent Plan",cluster:"Strategy",layer:3,color:"#1f8a4c",
-   date:"Apr 2025",year:2025,status:"prog",statusLabel:"Strategy",
-   what:"The master plan to make Europe a global AI leader, with action across five areas: computing infrastructure, data, skills, adoption and simplification. It is the strategic spine of the AI cluster.",
-   company:["Gateway to compute (AI Factories), data and funding opportunities","Adoption programmes and skills initiatives to help integrate AI","Simplification track to reduce AI-related friction"],
-   user:["More trustworthy, European-built AI services","Investment in AI skills and jobs"],
-   buildsOn:["digitalDecade","aiAct"],
-   doc:"Communication COM(2025) 165",docUrl:"https://digital-strategy.ec.europa.eu/en/library/ai-continent-action-plan"},
+  {id:"aiContinent",cluster:"strategy",layer:3,date:"Apr 2025",year:2025,status:"prog",
+   name:L("AI Continent Action Plan","KI-Kontinent-Aktionsplan"), short:L("AI Continent Plan","KI-Kontinent-Plan"),
+   statusLabel:L("Strategy","Strategie"),
+   what:L("The master plan to make Europe a global AI leader, with action across five areas: computing infrastructure, data, skills, adoption and simplification. It is the strategic spine of the AI cluster.",
+          "Der Masterplan, um Europa zu einer globalen KI-Führungsmacht zu machen, mit Maßnahmen in fünf Bereichen: Recheninfrastruktur, Daten, Kompetenzen, Verbreitung und Vereinfachung. Er ist das strategische Rückgrat des KI-Clusters."),
+   company:L(["Gateway to compute (AI Factories), data and funding opportunities","Adoption programmes and skills initiatives to help integrate AI","Simplification track to reduce AI-related friction"],
+            ["Zugang zu Rechenleistung (KI-Fabriken), Daten und Fördermöglichkeiten","Programme zur Verbreitung und Kompetenzinitiativen zur KI-Integration","Vereinfachungsstrang zum Abbau von KI-bezogenen Hürden"]),
+   user:L(["More trustworthy, European-built AI services","Investment in AI skills and jobs"],
+          ["Mehr vertrauenswürdige, in Europa entwickelte KI-Dienste","Investitionen in KI-Kompetenzen und Arbeitsplätze"]),
+   buildsOn:["digitalDecade","aiAct"], doc:L("Communication COM(2025) 165","Mitteilung COM(2025) 165"),
+   docUrl:"https://digital-strategy.ec.europa.eu/en/library/ai-continent-action-plan"},
 
-  {id:"applyAi",name:"Apply AI Strategy",short:"Apply AI",cluster:"Strategy",layer:3,color:"#1f8a4c",
-   date:"Oct 2025",year:2025,status:"prog",statusLabel:"Strategy",
-   what:"The EU's sectoral AI-adoption strategy. Promotes an 'AI-first' approach and a 'buy European / open source' stance, with flagships across 10 industry sectors plus the public sector.",
-   company:["SMEs use Experience Centres for AI, regulatory sandboxes and testing facilities","Sector flagships (health, mobility, energy, manufacturing, defence and more)","Public bodies steered toward European and open-source AI"],
-   user:["AI in healthcare (e.g. screening centres), transport and energy","Better, more responsive public services"],
-   buildsOn:["aiContinent","aiFactories","dataUnion","aiAct"],
-   doc:"Communication COM(2025) 723",docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52025DC0723"},
+  {id:"applyAi",cluster:"strategy",layer:3,date:"Oct 2025",year:2025,status:"prog",
+   name:L("Apply AI Strategy","Apply-AI-Strategie"), short:L("Apply AI","Apply AI"),
+   statusLabel:L("Strategy","Strategie"),
+   what:L("The EU's sectoral AI-adoption strategy. Promotes an 'AI-first' approach and a 'buy European / open source' stance, with flagships across 10 industry sectors plus the public sector.",
+          "Die sektorale KI-Verbreitungsstrategie der EU. Sie fördert einen 'AI-first'-Ansatz und eine Haltung 'europäisch / Open Source kaufen', mit Leuchtturmprojekten in 10 Industriesektoren sowie im öffentlichen Sektor."),
+   company:L(["SMEs use Experience Centres for AI, regulatory sandboxes and testing facilities","Sector flagships (health, mobility, energy, manufacturing, defence and more)","Public bodies steered toward European and open-source AI"],
+            ["KMU nutzen Experience Centres for AI, regulatorische Sandkästen und Testanlagen","Sektorale Leuchttürme (Gesundheit, Mobilität, Energie, Fertigung, Verteidigung u. a.)","Öffentliche Stellen werden zu europäischer und Open-Source-KI gelenkt"]),
+   user:L(["AI in healthcare (e.g. screening centres), transport and energy","Better, more responsive public services"],
+          ["KI im Gesundheitswesen (z. B. Screening-Zentren), im Verkehr und in der Energie","Bessere, reaktionsschnellere öffentliche Dienste"]),
+   buildsOn:["aiContinent","aiFactories","dataUnion","aiAct"], doc:L("Communication COM(2025) 723","Mitteilung COM(2025) 723"),
+   docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52025DC0723"},
 
-  {id:"dataUnion",name:"Data Union Strategy",short:"Data Union",cluster:"Strategy",layer:3,color:"#1f8a4c",
-   date:"Dec 2025",year:2025,status:"prog",statusLabel:"Strategy",
-   what:"Increases the availability of high-quality data for AI, simplifies EU data rules, and safeguards Europe's data sovereignty in international data flows.",
-   company:["Access new data labs and common European data spaces (~€100m investment)","Cheaper, simpler data access plus clearer rules (model contracts, legal helpdesk)","Use synthetic data and 30m+ digitised cultural objects for AI training"],
-   user:["Better AI-powered products and services","Stronger safeguards for how European data is treated abroad"],
-   buildsOn:["dataAct"],
-   doc:"Communication COM(2025) 835",docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=COM:2025:835:FIN"},
+  {id:"dataUnion",cluster:"strategy",layer:3,date:"Dec 2025",year:2025,status:"prog",
+   name:L("Data Union Strategy","Datenunion-Strategie"), short:L("Data Union","Datenunion"),
+   statusLabel:L("Strategy","Strategie"),
+   what:L("Increases the availability of high-quality data for AI, simplifies EU data rules, and safeguards Europe's data sovereignty in international data flows.",
+          "Erhöht die Verfügbarkeit hochwertiger Daten für KI, vereinfacht die EU-Datenregeln und sichert Europas Datensouveränität bei internationalen Datenflüssen."),
+   company:L(["Access new data labs and common European data spaces (~€100m investment)","Cheaper, simpler data access plus clearer rules (model contracts, legal helpdesk)","Use synthetic data and 30m+ digitised cultural objects for AI training"],
+            ["Zugang zu neuen Datenlaboren und gemeinsamen europäischen Datenräumen (~100 Mio. € Investition)","Günstigerer, einfacherer Datenzugang plus klarere Regeln (Musterverträge, Rechts-Helpdesk)","Nutzung synthetischer Daten und 30 Mio.+ digitalisierter Kulturobjekte für das KI-Training"]),
+   user:L(["Better AI-powered products and services","Stronger safeguards for how European data is treated abroad"],
+          ["Bessere KI-gestützte Produkte und Dienste","Stärkere Schutzvorkehrungen dafür, wie europäische Daten im Ausland behandelt werden"]),
+   buildsOn:["dataAct"], doc:L("Communication COM(2025) 835","Mitteilung COM(2025) 835"),
+   docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=COM:2025:835:FIN"},
 
-  {id:"startup",name:"EU Startup and Scaleup Strategy",short:"Startup & Scaleup",cluster:"Strategy",layer:3,color:"#1f8a4c",
-   date:"May 2025",year:2025,status:"prog",statusLabel:"Strategy",
-   what:"'Choose Europe to Start and Scale' — improves access to finance, reduces regulatory barriers and strengthens cross-border scaling so innovative firms grow in Europe rather than leaving.",
-   company:["Better access to late-stage / scale-up capital","Simpler rules and work toward a harmonised cross-border regime","Support on talent, stock options and access to compute and data"],
-   user:["More European tech champions and the jobs they create","Strategic firms and IP staying in Europe"],
-   buildsOn:["digitalDecade"],
-   doc:"Communication COM(2025) 270",docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52025DC0270"},
+  {id:"startup",cluster:"strategy",layer:3,date:"May 2025",year:2025,status:"prog",
+   name:L("EU Startup and Scaleup Strategy","EU-Strategie für Start-ups und Scale-ups"), short:L("Startup & Scaleup","Start-ups & Scale-ups"),
+   statusLabel:L("Strategy","Strategie"),
+   what:L("'Choose Europe to Start and Scale' — improves access to finance, reduces regulatory barriers and strengthens cross-border scaling so innovative firms grow in Europe rather than leaving.",
+          "'Choose Europe to Start and Scale' – verbessert den Zugang zu Finanzierung, baut regulatorische Hürden ab und stärkt die grenzüberschreitende Skalierung, damit innovative Unternehmen in Europa wachsen statt abzuwandern."),
+   company:L(["Better access to late-stage / scale-up capital","Simpler rules and work toward a harmonised cross-border regime","Support on talent, stock options and access to compute and data"],
+            ["Besserer Zugang zu Spätphasen-/Scale-up-Kapital","Einfachere Regeln und Arbeit an einem harmonisierten grenzüberschreitenden Regime","Unterstützung bei Talenten, Mitarbeiterbeteiligungen sowie Zugang zu Rechenleistung und Daten"]),
+   user:L(["More European tech champions and the jobs they create","Strategic firms and IP staying in Europe"],
+          ["Mehr europäische Tech-Champions und die Arbeitsplätze, die sie schaffen","Strategische Unternehmen und geistiges Eigentum bleiben in Europa"]),
+   buildsOn:["digitalDecade"], doc:L("Communication COM(2025) 270","Mitteilung COM(2025) 270"),
+   docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52025DC0270"},
 
-  {id:"omnibus",name:"Digital Omnibus",short:"Digital Omnibus",cluster:"Horizontal",layer:4,color:"#c77d18",
-   date:"Nov 2025",year:2025,status:"prop",statusLabel:"Proposed",
-   what:"A simplification package amending a large body of digital law to cut compliance costs, improve coherence and make responsible compliance a competitive advantage.",
-   company:["Lower, clearer compliance duties across AI, data, cyber, ePrivacy and eID rules","Projected to save businesses billions in administrative cost","Same objectives, less paperwork"],
-   user:["Same protections, delivered more simply","New digital wallets and smoother digital interactions"],
-   buildsOn:["aiAct","dataAct","cra"],
-   doc:"Proposal COM(2025) 837",docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52025PC0837"},
+  {id:"cada",cluster:"cloud",layer:3,date:"Jun 2026",year:2026,status:"prop",
+   name:L("Cloud and AI Development Act","Cloud- und KI-Entwicklungsgesetz"), short:L("Cloud & AI Dev Act (CADA)","Cloud- & KI-Gesetz (CADA)"),
+   statusLabel:L("Proposed","Vorschlag"),
+   note:L("Proposal adopted 3 June 2026 — not yet law. Its scope and the four sovereignty levels may change during the legislative process.",
+          "Vorschlag am 3. Juni 2026 angenommen – noch kein geltendes Recht. Umfang und die vier Souveränitätsstufen können sich im Gesetzgebungsverfahren ändern."),
+   what:L("The legislative anchor for cloud and AI sovereignty. It speeds up sustainable data-centre deployment (aiming to at least triple EU capacity in 5–7 years), defines four cloud/AI sovereignty assurance levels for public bodies, sets up joint EU procurement, and takes an open-source-first approach — tackling both Europe's capacity gap and its reliance on non-EU cloud.",
+          "Der gesetzliche Anker für Cloud- und KI-Souveränität. Es beschleunigt den nachhaltigen Aufbau von Rechenzentren (Ziel: mindestens Verdreifachung der EU-Kapazität in 5–7 Jahren), definiert vier Cloud-/KI-Souveränitätsstufen für öffentliche Stellen, schafft eine gemeinsame EU-Beschaffung und verfolgt einen Open-Source-First-Ansatz – und adressiert so zugleich Europas Kapazitätslücke und seine Abhängigkeit von Nicht-EU-Cloud."),
+   company:L(["Faster data-centre permitting and better access to energy, land, water and financing","Cloud/AI providers can be audited and recognised at sovereignty Level 1–4 by Member States","Joint EU procurement rewards EU added value, supply-chain resilience and open source"],
+            ["Schnellere Rechenzentrums-Genehmigungen und besserer Zugang zu Energie, Land, Wasser und Finanzierung","Cloud-/KI-Anbieter können von Mitgliedstaaten auf Souveränitätsstufe 1–4 auditiert und anerkannt werden","Gemeinsame EU-Beschaffung belohnt EU-Mehrwert, Lieferkettenresilienz und Open Source"]),
+   user:L(["More European cloud and AI capacity to run the services you rely on","Sensitive public-sector workloads kept on EU-controlled infrastructure","Greater resilience against foreign access or 'kill-switch' risks"],
+          ["Mehr europäische Cloud- und KI-Kapazität für die Dienste, die Sie nutzen","Sensible Workloads des öffentlichen Sektors bleiben auf EU-kontrollierter Infrastruktur","Größere Widerstandsfähigkeit gegen ausländische Zugriffs- oder 'Kill-Switch'-Risiken"]),
+   buildsOn:["aiContinent","aiFactories","dataUnion"], doc:L("Proposal for a Regulation (3 Jun 2026)","Verordnungsvorschlag (3. Juni 2026)"),
+   docUrl:"https://digital-strategy.ec.europa.eu/en/policies/cloud-and-ai-development-act"},
 
-  {id:"oss",name:"EU Open-Source Solutions Catalogue",short:"OSS Catalogue",cluster:"Horizontal",layer:4,color:"#c77d18",
-   date:"2024–25",year:2025,status:"prog",statusLabel:"Live platform",
-   what:"A central platform for public administrations to discover, share and reuse open-source software, supporting interoperability and reducing duplication and lock-in.",
-   company:["GovTech vendors can list and showcase open-source solutions","Public bodies discover and reuse existing software instead of rebuilding","Supports the 'buy European / open source' push of Apply AI"],
-   user:["Better, cheaper and more transparent public digital services","Less dependence on proprietary, often non-EU software"],
-   buildsOn:["applyAi"],
-   doc:"Interoperable Europe — EU OSS Catalogue",docUrl:"https://interoperable-europe.ec.europa.eu/eu-oss-catalogue/about"},
+  {id:"omnibus",cluster:"horizontal",layer:4,date:"Nov 2025",year:2025,status:"prop",
+   name:L("Digital Omnibus","Digitaler Omnibus"), short:L("Digital Omnibus","Digitaler Omnibus"),
+   statusLabel:L("Proposed","Vorschlag"),
+   what:L("A simplification package amending a large body of digital law to cut compliance costs, improve coherence and make responsible compliance a competitive advantage.",
+          "Ein Vereinfachungspaket, das eine Vielzahl digitaler Gesetze ändert, um Befolgungskosten zu senken, die Kohärenz zu verbessern und verantwortungsvolle Befolgung zum Wettbewerbsvorteil zu machen."),
+   company:L(["Lower, clearer compliance duties across AI, data, cyber, ePrivacy and eID rules","Projected to save businesses billions in administrative cost","Same objectives, less paperwork"],
+            ["Geringere, klarere Pflichten über KI-, Daten-, Cyber-, ePrivacy- und eID-Regeln hinweg","Soll Unternehmen Milliarden an Verwaltungskosten ersparen","Gleiche Ziele, weniger Bürokratie"]),
+   user:L(["Same protections, delivered more simply","New digital wallets and smoother digital interactions"],
+          ["Gleiche Schutzstandards, einfacher umgesetzt","Neue digitale Brieftaschen und reibungslosere digitale Vorgänge"]),
+   buildsOn:["aiAct","dataAct","cra"], doc:L("Proposal COM(2025) 837","Vorschlag COM(2025) 837"),
+   docUrl:"https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52025PC0837"},
 
-  {id:"ict",name:"ICT Supply Chain Security Toolbox",short:"ICT Supply Chain Toolbox",cluster:"Horizontal",layer:4,color:"#c77d18",
-   date:"Feb 2026",year:2026,status:"prog",statusLabel:"Adopted",
-   what:"A coordinated EU approach (NIS Cooperation Group + Commission + ENISA) to identify, assess and mitigate cybersecurity risks in ICT supply chains and reduce dependence on high-risk suppliers.",
-   company:["Assess supply-chain cyber risks using a common framework","Diversify suppliers and mitigate exposure to high-risk vendors","Aligns with NIS2 and the Cyber Resilience Act"],
-   user:["More secure critical infrastructure and digital services","Lower risk from compromised technology in essential systems"],
-   buildsOn:["cra"],
-   doc:"EU ICT Supply Chain Security Toolbox",docUrl:"https://digital-strategy.ec.europa.eu/en/library/toolbox-improve-ict-supply-chain-security"},
+  {id:"openSource",cluster:"horizontal",layer:3,date:"Jun 2026",year:2026,status:"prog",
+   name:L("EU Open Source Strategy","EU-Open-Source-Strategie"), short:L("Open Source Strategy","Open-Source-Strategie"),
+   statusLabel:L("Strategy","Strategie"),
+   what:L("Places open source at the centre of Europe's tech sovereignty, promoting European open alternatives to non-EU proprietary solutions across the whole technology stack. Built on three pillars — trusted assets, empowered communities and strong governance — it supports open-source development, scaling and long-term sustainability in both the public and private sectors. Part of the Tech Sovereignty package (COM(2026) 503).",
+          "Stellt Open Source ins Zentrum der Technologiesouveränität Europas und fördert europäische offene Alternativen zu proprietären Nicht-EU-Lösungen über den gesamten Technologie-Stack. Auf drei Säulen aufgebaut – vertrauenswürdige Bausteine, gestärkte Communities und starke Governance – unterstützt sie Entwicklung, Skalierung und langfristige Tragfähigkeit von Open Source im öffentlichen wie im privaten Sektor. Teil des Technologiesouveränitäts-Pakets (COM(2026) 503)."),
+   company:L(["Build, scale and sustain European open-source alternatives, with support for long-term maintenance and funding","Reuse trusted shared assets — code repositories and flexible licensing schemes — instead of rebuilding","Public administrations are steered toward open source in procurement (reinforced by CADA and the OSS Catalogue)"],
+            ["Europäische Open-Source-Alternativen entwickeln, skalieren und tragfähig halten – mit Unterstützung für Wartung und Finanzierung","Vertrauenswürdige gemeinsame Bausteine – Code-Repositorien und flexible Lizenzmodelle – wiederverwenden statt neu zu bauen","Öffentliche Verwaltungen werden in der Beschaffung zu Open Source gelenkt (verstärkt durch CADA und den OSS-Katalog)"]),
+   user:L(["Less lock-in to proprietary, often non-EU software","More transparent, auditable technology behind public services","More resilient, sustainably maintained digital systems"],
+          ["Geringeres Lock-in an proprietäre, oft nicht-europäische Software","Transparentere, prüfbare Technik hinter öffentlichen Diensten","Widerstandsfähigere, nachhaltig gewartete digitale Systeme"]),
+   buildsOn:["digitalDecade"], doc:L("Communication COM(2026) 503","Mitteilung COM(2026) 503"),
+   docUrl:"https://digital-strategy.ec.europa.eu/en/policies/open-source-strategy"},
 
-  {id:"cada",name:"Cloud and AI Development Act",short:"Cloud & AI Dev Act (CADA)",cluster:"Cloud sovereignty",layer:3,color:"#0a8a99",
-   date:"Jun 2026",year:2026,status:"prop",statusLabel:"Proposed",
-   note:"Proposal adopted 3 June 2026 — not yet law. Its scope and the four sovereignty levels may change during the legislative process.",
-   what:"The legislative anchor for cloud and AI sovereignty. It speeds up sustainable data-centre deployment (aiming to at least triple EU capacity in 5–7 years), defines four cloud/AI sovereignty assurance levels for public bodies, sets up joint EU procurement, and takes an open-source-first approach — tackling both Europe's capacity gap and its reliance on non-EU cloud.",
-   company:["Faster data-centre permitting and better access to energy, land, water and financing","Cloud/AI providers can be audited and recognised at sovereignty Level 1–4 by Member States","Joint EU procurement rewards EU added value, supply-chain resilience and open source"],
-   user:["More European cloud and AI capacity to run the services you rely on","Sensitive public-sector workloads kept on EU-controlled infrastructure","Greater resilience against foreign access or 'kill-switch' risks"],
-   buildsOn:["aiContinent","aiFactories","dataUnion"],
-   doc:"Proposal for a Regulation (3 Jun 2026)",docUrl:"https://digital-strategy.ec.europa.eu/en/policies/cloud-and-ai-development-act"},
+  {id:"oss",cluster:"horizontal",layer:4,date:"2024–25",year:2025,status:"prog",
+   name:L("EU Open-Source Solutions Catalogue","EU-Katalog für Open-Source-Lösungen"), short:L("OSS Catalogue","OSS-Katalog"),
+   statusLabel:L("Live platform","Live-Plattform"),
+   what:L("A central platform for public administrations to discover, share and reuse open-source software, supporting interoperability and reducing duplication and lock-in.",
+          "Eine zentrale Plattform, auf der öffentliche Verwaltungen Open-Source-Software entdecken, teilen und wiederverwenden können – für Interoperabilität und gegen Doppelarbeit und Lock-in."),
+   company:L(["GovTech vendors can list and showcase open-source solutions","Public bodies discover and reuse existing software instead of rebuilding","Supports the 'buy European / open source' push of Apply AI"],
+            ["GovTech-Anbieter können Open-Source-Lösungen listen und präsentieren","Öffentliche Stellen entdecken und verwenden bestehende Software wieder, statt neu zu bauen","Unterstützt den 'europäisch / Open Source kaufen'-Ansatz von Apply AI"]),
+   user:L(["Better, cheaper and more transparent public digital services","Less dependence on proprietary, often non-EU software"],
+          ["Bessere, günstigere und transparentere öffentliche digitale Dienste","Geringere Abhängigkeit von proprietärer, oft nicht-europäischer Software"]),
+   buildsOn:["openSource","applyAi"], doc:L("Interoperable Europe — EU OSS Catalogue","Interoperable Europe – EU-OSS-Katalog"),
+   docUrl:"https://interoperable-europe.ec.europa.eu/eu-oss-catalogue/about"},
 
-  {id:"seal",name:"Cloud Sovereignty Framework (SEAL)",short:"Cloud Sovereignty Framework (SEAL)",cluster:"Cloud sovereignty",layer:4,color:"#0a8a99",
-   date:"2025–26",year:2026,status:"prog",statusLabel:"In use",
-   note:"An assessment and procurement tool, not legislation — applied in EU tenders rather than legally binding on the wider market.",
-   what:"The Commission's practical tool to measure how sovereign a cloud service really is. It assigns a Sovereignty Effectiveness Assurance Level — SEAL-2 (data sovereignty), SEAL-3 (technological autonomy), SEAL-4 (full sovereignty) — plus an overall score from 48 criteria across 8 categories. It was used to award a €180m sovereign-cloud contract for the EU institutions, with a minimum of SEAL-2 required.",
-   company:["Get rated on a SEAL level and an 8-category sovereignty score (incl. supply chain, the heaviest weighted)","Reaching SEAL-2+ becomes a real advantage in EU and public-sector tenders","A ready-made yardstick to assess your own or your vendors' sovereignty"],
-   user:["Public services procured on cloud that meets defined sovereignty thresholds","A clear, auditable standard replacing vague 'sovereign cloud' marketing claims"],
-   buildsOn:["cada"],
-   doc:"Cloud Sovereignty Framework — implementation guidance",docUrl:"https://commission.europa.eu/news-and-media/news/sovereign-cloud-framework-explained-2026-06-01_en"},
+  {id:"ict",cluster:"horizontal",layer:4,date:"Feb 2026",year:2026,status:"prog",
+   name:L("ICT Supply Chain Security Toolbox","Instrumentarium für die Sicherheit der IKT-Lieferkette"), short:L("ICT Supply Chain Toolbox","IKT-Lieferketten-Instrumentarium"),
+   statusLabel:L("Adopted","Angenommen"),
+   what:L("A coordinated EU approach (NIS Cooperation Group + Commission + ENISA) to identify, assess and mitigate cybersecurity risks in ICT supply chains and reduce dependence on high-risk suppliers.",
+          "Ein koordinierter EU-Ansatz (NIS-Kooperationsgruppe + Kommission + ENISA), um Cybersicherheitsrisiken in IKT-Lieferketten zu erkennen, zu bewerten und zu mindern und die Abhängigkeit von Hochrisiko-Lieferanten zu verringern."),
+   company:L(["Assess supply-chain cyber risks using a common framework","Diversify suppliers and mitigate exposure to high-risk vendors","Aligns with NIS2 and the Cyber Resilience Act"],
+            ["Lieferketten-Cyberrisiken mit einem gemeinsamen Rahmen bewerten","Lieferanten diversifizieren und Risiken durch Hochrisiko-Anbieter mindern","Im Einklang mit NIS2 und der Cyberresilienz-Verordnung"]),
+   user:L(["More secure critical infrastructure and digital services","Lower risk from compromised technology in essential systems"],
+          ["Sicherere kritische Infrastrukturen und digitale Dienste","Geringeres Risiko durch kompromittierte Technik in wesentlichen Systemen"]),
+   buildsOn:["cra"], doc:L("EU ICT Supply Chain Security Toolbox","EU-Instrumentarium für IKT-Lieferkettensicherheit"),
+   docUrl:"https://digital-strategy.ec.europa.eu/en/library/toolbox-improve-ict-supply-chain-security"},
+
+  {id:"seal",cluster:"cloud",layer:4,date:"2025–26",year:2026,status:"prog",
+   name:L("Cloud Sovereignty Framework (SEAL)","Rahmen für Cloud-Souveränität (SEAL)"), short:L("Cloud Sovereignty Framework (SEAL)","Cloud-Souveränitätsrahmen (SEAL)"),
+   statusLabel:L("In use","Im Einsatz"),
+   note:L("An assessment and procurement tool, not legislation — applied in EU tenders rather than legally binding on the wider market.",
+          "Ein Bewertungs- und Beschaffungsinstrument, kein Gesetz – wird in EU-Ausschreibungen angewandt, ist aber für den breiteren Markt nicht rechtsverbindlich."),
+   what:L("The Commission's practical tool to measure how sovereign a cloud service really is. It assigns a Sovereignty Effectiveness Assurance Level — SEAL-2 (data sovereignty), SEAL-3 (technological autonomy), SEAL-4 (full sovereignty) — plus an overall score from 48 criteria across 8 categories. It was used to award a €180m sovereign-cloud contract for the EU institutions, with a minimum of SEAL-2 required.",
+          "Das praktische Instrument der Kommission, um zu messen, wie souverän ein Cloud-Dienst wirklich ist. Es vergibt ein Sovereignty Effectiveness Assurance Level – SEAL-2 (Datensouveränität), SEAL-3 (technologische Autonomie), SEAL-4 (volle Souveränität) – plus eine Gesamtbewertung aus 48 Kriterien in 8 Kategorien. Es wurde genutzt, um einen 180-Mio.-€-Auftrag für souveräne Cloud der EU-Institutionen zu vergeben (mindestens SEAL-2)."),
+   company:L(["Get rated on a SEAL level and an 8-category sovereignty score (incl. supply chain, the heaviest weighted)","Reaching SEAL-2+ becomes a real advantage in EU and public-sector tenders","A ready-made yardstick to assess your own or your vendors' sovereignty"],
+            ["Bewertung nach SEAL-Stufe und einer 8-Kategorien-Souveränitätswertung (inkl. Lieferkette, am stärksten gewichtet)","SEAL-2+ wird zum echten Vorteil in EU- und öffentlichen Ausschreibungen","Ein fertiger Maßstab, um die eigene Souveränität oder die von Lieferanten zu bewerten"]),
+   user:L(["Public services procured on cloud that meets defined sovereignty thresholds","A clear, auditable standard replacing vague 'sovereign cloud' marketing claims"],
+          ["Öffentliche Dienste, beschafft auf Cloud, die definierte Souveränitätsschwellen erfüllt","Ein klarer, prüfbarer Standard statt vager 'Sovereign-Cloud'-Werbeversprechen"]),
+   buildsOn:["cada"], doc:L("Cloud Sovereignty Framework — implementation guidance","Cloud-Souveränitätsrahmen – Umsetzungsleitfaden"),
+   docUrl:"https://commission.europa.eu/news-and-media/news/sovereign-cloud-framework-explained-2026-06-01_en"}
 ];
 
-const LAYERS = [
-  {i:0,label:"Foundation — overarching framework"},
-  {i:1,label:"Infrastructure & strategic technologies"},
-  {i:2,label:"Core regulation — data, AI, markets, cyber"},
-  {i:3,label:"Strategies — orchestration & adoption"},
-  {i:4,label:"Horizontal — simplification, security, openness"},
-];
-
-const byId = Object.fromEntries(DATA.map(d=>[d.id,d]));
-// reverse edges: who builds on X
-const dependents = {};
+// helpers
+const T=(v)=> (v && typeof v==='object' && ('en' in v)) ? v[lang] : v;
+const byId=Object.fromEntries(DATA.map(d=>[d.id,d]));
+const dependents={};
 DATA.forEach(d=>d.buildsOn.forEach(t=>{(dependents[t]=dependents[t]||[]).push(d.id)}));
+const clusterOrder=["framework","infra","regulation","strategy","cloud","horizontal"];
+const mapWrap=document.getElementById('mapWrap');
+const svg=document.getElementById('edges');
+let activeNode=null, activeFilter="all";
 
-/* ---------- DEPENDENCY MAP ---------- */
-const mapWrap = document.getElementById('mapWrap');
-const svg = document.getElementById('edges');
-LAYERS.forEach(L=>{
-  const layer=document.createElement('div');layer.className='layer';
-  layer.innerHTML=`<div class="layer-label">${L.label}</div>`;
-  const row=document.createElement('div');row.className='layer-row';
-  DATA.filter(d=>d.layer===L.i).forEach(d=>{
-    const n=document.createElement('div');
-    n.className='node';n.dataset.id=d.id;n.style.setProperty('--c',d.color);
-    n.innerHTML=`${d.short}<span class="ntag">${d.date} · ${d.statusLabel}</span>`;
-    n.addEventListener('click',e=>{e.stopPropagation();selectNode(d.id);});
-    row.appendChild(n);
-  });
-  layer.appendChild(row);mapWrap.appendChild(layer);
-});
+function ui(k){return UI[lang][k];}
 
-function nodeEl(id){return mapWrap.querySelector(`.node[data-id="${id}"]`);}
-function centerOf(el){
-  const r=el.getBoundingClientRect();const w=mapWrap.getBoundingClientRect();
-  return {x:r.left-w.left+r.width/2, y:r.top-w.top+r.height/2, top:r.top-w.top, bottom:r.bottom-w.top};
+function renderStatic(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=ui(el.dataset.i18n);});
+  // pillars
+  document.getElementById('pillars').innerHTML=ui('pillars').map(p=>`<span class="chip">${p}</span>`).join('');
+  // mini cards
+  document.getElementById('miniCards').innerHTML=ui('mini').map(m=>`<div class="mini"><h4>${m.h}</h4><p>${m.p}</p></div>`).join('');
+  // legend
+  document.getElementById('legend').innerHTML=
+    clusterOrder.map(k=>`<span><span class="legend-dot" style="background:${colorByKey[k]}"></span>${ui('cluster')[k]}</span>`).join('')
+    +`<span style="margin-left:auto"><em>${ui('map_hint')}</em></span>`;
+  // lang buttons
+  document.querySelectorAll('#lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
 }
-function drawEdges(active){
-  svg.innerHTML='';
-  const W=mapWrap.clientWidth,H=mapWrap.clientHeight;
-  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-  DATA.forEach(d=>{
-    d.buildsOn.forEach(t=>{
-      const a=nodeEl(d.id),b=nodeEl(t);if(!a||!b)return;
-      const pa=centerOf(a),pb=centerOf(b);
-      const x1=pa.x,y1=pa.top,x2=pb.x,y2=pb.bottom;
-      const my=(y1+y2)/2;
-      const isAct = active && (d.id===active||t===active);
-      const path=document.createElementNS('http://www.w3.org/2000/svg','path');
-      path.setAttribute('d',`M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`);
-      path.setAttribute('fill','none');
-      path.setAttribute('stroke',isAct?byId[active].color:'#c8d2e6');
-      path.setAttribute('stroke-width',isAct?2.4:1.2);
-      path.setAttribute('opacity',active?(isAct?1:.18):.55);
-      svg.appendChild(path);
+
+function buildMap(){
+  // remove existing layers (keep svg)
+  mapWrap.querySelectorAll('.layer').forEach(n=>n.remove());
+  ui('layers').forEach((label,i)=>{
+    const layer=document.createElement('div');layer.className='layer';
+    layer.innerHTML=`<div class="layer-label">${label}</div>`;
+    const row=document.createElement('div');row.className='layer-row';
+    DATA.filter(d=>d.layer===i).forEach(d=>{
+      const n=document.createElement('div');
+      n.className='node';n.dataset.id=d.id;n.style.setProperty('--c',colorByKey[d.cluster]);
+      n.innerHTML=`${T(d.short)}<span class="ntag">${d.date} · ${T(d.statusLabel)}</span>`;
+      n.addEventListener('click',e=>{e.stopPropagation();selectNode(d.id);});
+      row.appendChild(n);
     });
+    layer.appendChild(row);mapWrap.appendChild(layer);
   });
 }
-let activeNode=null;
+function nodeEl(id){return mapWrap.querySelector(`.node[data-id="${id}"]`);}
+function centerOf(el){const r=el.getBoundingClientRect();const w=mapWrap.getBoundingClientRect();return {x:r.left-w.left+r.width/2,top:r.top-w.top,bottom:r.bottom-w.top};}
+function drawEdges(active){
+  svg.innerHTML='';const W=mapWrap.clientWidth,H=mapWrap.clientHeight;svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  DATA.forEach(d=>d.buildsOn.forEach(t=>{
+    const a=nodeEl(d.id),b=nodeEl(t);if(!a||!b)return;
+    const pa=centerOf(a),pb=centerOf(b);const x1=pa.x,y1=pa.top,x2=pb.x,y2=pb.bottom,my=(y1+y2)/2;
+    const isAct=active&&(d.id===active||t===active);
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',`M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}`);
+    p.setAttribute('fill','none');p.setAttribute('stroke',isAct?colorByKey[byId[active].cluster]:'#c8d2e6');
+    p.setAttribute('stroke-width',isAct?2.4:1.2);p.setAttribute('opacity',active?(isAct?1:.18):.55);
+    svg.appendChild(p);
+  }));
+}
 function selectNode(id){
-  activeNode=id;const set=new Set([id,...(byId[id].buildsOn),...((dependents[id]||[]))]);
+  activeNode=id;const set=new Set([id,...byId[id].buildsOn,...(dependents[id]||[])]);
   mapWrap.querySelectorAll('.node').forEach(n=>{
     n.classList.remove('active','related','dim');
     if(n.dataset.id===id)n.classList.add('active');
     else if(set.has(n.dataset.id))n.classList.add('related');
     else n.classList.add('dim');
   });
-  drawEdges(id);
-  openModal(id);
+  drawEdges(id);openModal(id);
 }
 function resetMap(){activeNode=null;mapWrap.querySelectorAll('.node').forEach(n=>n.classList.remove('active','related','dim'));drawEdges(null);}
 mapWrap.addEventListener('click',resetMap);
 window.addEventListener('resize',()=>drawEdges(activeNode));
-setTimeout(()=>drawEdges(null),60);
 
-/* ---------- TIMELINE ---------- */
-const tl=document.getElementById('tl');
-const years=[...new Set(DATA.map(d=>d.year))].sort();
-years.forEach(y=>{
-  const items=DATA.filter(d=>d.year===y).sort((a,b)=>a.layer-b.layer);
-  const block=document.createElement('div');block.className='tl-year';
-  const track=items.map(d=>{
-    const sc=d.status==='force'?'s-force':d.status==='prop'?'s-prop':'s-prog';
-    return `<div class="tl-item" data-id="${d.id}" style="--c:${d.color}">
-      <h4>${d.name}<span class="status ${sc}">${d.statusLabel}</span></h4>
-      <div class="when">${d.date} · ${d.cluster}</div>
-      ${d.note?`<div class="tl-note">⚠ ${d.note}</div>`:''}
-    </div>`;
-  }).join('');
-  block.innerHTML=`<div class="yr">${y}</div><div class="tl-track">${track}</div>`;
-  tl.appendChild(block);
-});
-tl.querySelectorAll('.tl-item').forEach(el=>el.addEventListener('click',()=>openModal(el.dataset.id)));
+function scls(s){return s==='force'?'s-force':s==='prop'?'s-prop':'s-prog';}
 
-/* ---------- EXPLORER ---------- */
-const clusters=["All","Framework","Infrastructure","Regulation","Strategy","Cloud sovereignty","Horizontal"];
-const filters=document.getElementById('filters');
-const grid=document.getElementById('grid');
-let activeFilter="All";
-clusters.forEach(c=>{
-  const b=document.createElement('button');b.className='fbtn'+(c==="All"?' on':'');b.textContent=c;
-  b.addEventListener('click',()=>{activeFilter=c;[...filters.children].forEach(x=>x.classList.remove('on'));b.classList.add('on');renderGrid();});
-  filters.appendChild(b);
-});
+function renderTimeline(){
+  const tl=document.getElementById('tl');tl.innerHTML='';
+  const years=[...new Set(DATA.map(d=>d.year))].sort();
+  years.forEach(y=>{
+    const items=DATA.filter(d=>d.year===y).sort((a,b)=>a.layer-b.layer);
+    const block=document.createElement('div');block.className='tl-year';
+    const track=items.map(d=>`<div class="tl-item" data-id="${d.id}" style="--c:${colorByKey[d.cluster]}">
+        <h4>${T(d.name)}<span class="status ${scls(d.status)}">${T(d.statusLabel)}</span></h4>
+        <div class="when">${d.date} · ${ui('cluster')[d.cluster]}</div>
+        ${d.note?`<div class="tl-note">⚠ ${T(d.note)}</div>`:''}
+      </div>`).join('');
+    block.innerHTML=`<div class="yr">${y}</div><div class="tl-track">${track}</div>`;
+    tl.appendChild(block);
+  });
+  tl.querySelectorAll('.tl-item').forEach(el=>el.addEventListener('click',()=>openModal(el.dataset.id)));
+}
+
+function renderFilters(){
+  const f=document.getElementById('filters');f.innerHTML='';
+  const keys=['all',...clusterOrder];
+  keys.forEach(k=>{
+    const b=document.createElement('button');b.className='fbtn'+(k===activeFilter?' on':'');
+    b.textContent=k==='all'?ui('all'):ui('cluster')[k];
+    b.addEventListener('click',()=>{activeFilter=k;renderFilters();renderGrid();});
+    f.appendChild(b);
+  });
+}
 function renderGrid(){
-  grid.innerHTML='';
-  DATA.filter(d=>activeFilter==="All"||d.cluster===activeFilter).forEach(d=>{
-    const sc=d.status==='force'?'s-force':d.status==='prop'?'s-prop':'s-prog';
-    const card=document.createElement('div');card.className='card';card.style.setProperty('--c',d.color);
-    card.innerHTML=`<div class="cl">${d.cluster}</div><h4>${d.name}</h4><p>${d.what.slice(0,120)}…</p>
-      <div class="row"><span class="status ${sc}">${d.statusLabel}</span><span class="when muted" style="font-size:12px">${d.date}</span></div>
-      ${d.note?`<span class="cnote">⚠ ${d.note}</span>`:''}`;
+  const grid=document.getElementById('grid');grid.innerHTML='';
+  DATA.filter(d=>activeFilter==='all'||d.cluster===activeFilter).forEach(d=>{
+    const card=document.createElement('div');card.className='card';card.style.setProperty('--c',colorByKey[d.cluster]);
+    const w=T(d.what);
+    card.innerHTML=`<div class="cl">${ui('cluster')[d.cluster]}</div><h4>${T(d.name)}</h4><p>${w.slice(0,120)}…</p>
+      <div class="row"><span class="status ${scls(d.status)}">${T(d.statusLabel)}</span><span class="when muted" style="font-size:12px">${d.date}</span></div>
+      ${d.note?`<span class="cnote">⚠ ${T(d.note)}</span>`:''}`;
     card.addEventListener('click',()=>openModal(d.id));
     grid.appendChild(card);
   });
 }
-renderGrid();
 
-/* ---------- MODAL ---------- */
 const overlay=document.getElementById('overlay');
 const modal=document.getElementById('modal');
-function li(arr){return '<ul>'+arr.map(x=>`<li>${x}</li>`).join('')+'</ul>';}
+function liA(arr){return '<ul>'+arr.map(x=>`<li>${x}</li>`).join('')+'</ul>';}
 function depChips(d){
-  const on=d.buildsOn.map(t=>`<span class="dep" data-id="${t}">↳ builds on ${byId[t].short}</span>`).join('');
-  const rev=(dependents[d.id]||[]).map(t=>`<span class="dep" data-id="${t}">${byId[t].short} builds on this ↰</span>`).join('');
-  return (on||'<span class="muted">No prerequisites — this is a foundational measure.</span>')+
-         '<div style="height:10px"></div>'+
-         (rev?('<div class="muted" style="margin-bottom:6px">What depends on it:</div>'+rev):'');
+  const on=d.buildsOn.map(t=>`<span class="dep" data-id="${t}">${ui('builds_on')(T(byId[t].short))}</span>`).join('');
+  const rev=(dependents[d.id]||[]).map(t=>`<span class="dep" data-id="${t}">${ui('rev')(T(byId[t].short))}</span>`).join('');
+  return (on||`<span class="muted">${ui('no_prereq')}</span>`)+'<div style="height:10px"></div>'+
+    (rev?(`<div class="muted" style="margin-bottom:6px">${ui('deps_what')}</div>`+rev):'');
 }
 function openModal(id){
-  const d=byId[id];
-  const sc=d.status==='force'?'s-force':d.status==='prop'?'s-prop':'s-prog';
+  const d=byId[id];const col=colorByKey[d.cluster];
   modal.innerHTML=`
-    <div class="modal-head" style="border-top:5px solid ${d.color}">
+    <div class="modal-head" style="border-top:5px solid ${col}">
       <button class="close" aria-label="Close">×</button>
-      <div class="cl">${d.cluster}</div>
-      <h3>${d.name}</h3>
-      <div class="kv"><span class="k">${d.date}</span><span class="k">${d.doc}</span><span class="status ${sc}">${d.statusLabel}</span></div>
+      <div class="cl">${ui('cluster')[d.cluster]}</div>
+      <h3>${T(d.name)}</h3>
+      <div class="kv"><span class="k">${d.date}</span><span class="k">${T(d.doc)}</span><span class="status ${scls(d.status)}">${T(d.statusLabel)}</span></div>
     </div>
     <div class="tabs">
-      <button class="tab on" data-p="0">What it is</button>
-      <button class="tab" data-p="1">For companies</button>
-      <button class="tab" data-p="2">For end users</button>
-      <button class="tab" data-p="3">Dependencies</button>
+      <button class="tab on" data-p="0">${ui('tab_what')}</button>
+      <button class="tab" data-p="1">${ui('tab_company')}</button>
+      <button class="tab" data-p="2">${ui('tab_user')}</button>
+      <button class="tab" data-p="3">${ui('tab_deps')}</button>
     </div>
-    <div class="panel on" data-p="0">${d.note?`<div class="notebox"><b>⚠ Note:</b> ${d.note}</div>`:''}<p>${d.what}</p><a class="doclink" href="${d.docUrl}" target="_blank" rel="noopener">Open official document ↗</a></div>
-    <div class="panel" data-p="1"><strong>What a company needs to do</strong>${li(d.company)}</div>
-    <div class="panel" data-p="2"><strong>What it means for end users</strong>${li(d.user)}</div>
-    <div class="panel" data-p="3"><strong>How it connects</strong><div class="deps" style="margin-top:10px">${depChips(d)}</div></div>
-  `;
+    <div class="panel on" data-p="0">${d.note?`<div class="notebox"><b>${ui('note_label')}</b> ${T(d.note)}</div>`:''}<p>${T(d.what)}</p><a class="doclink" href="${d.docUrl}" target="_blank" rel="noopener">${ui('open_doc')}</a></div>
+    <div class="panel" data-p="1"><strong>${ui('h_company')}</strong>${liA(T(d.company))}</div>
+    <div class="panel" data-p="2"><strong>${ui('h_user')}</strong>${liA(T(d.user))}</div>
+    <div class="panel" data-p="3"><strong>${ui('h_deps')}</strong><div class="deps" style="margin-top:10px">${depChips(d)}</div></div>`;
   overlay.classList.add('open');document.body.style.overflow='hidden';
   modal.querySelector('.close').onclick=closeModal;
   modal.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
@@ -580,6 +682,15 @@ function openModal(id){
 function closeModal(){overlay.classList.remove('open');document.body.style.overflow='';}
 overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+function renderAll(){
+  renderStatic();buildMap();renderTimeline();renderFilters();renderGrid();
+  setTimeout(()=>drawEdges(activeNode),60);
+}
+function setLang(l){lang=l;try{localStorage.setItem('eutslang',l)}catch(e){}renderAll();}
+document.querySelectorAll('#lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+
+renderAll();
 </script>
 </body>
 </html>
