@@ -49,6 +49,11 @@
   .mini p{margin:0;font-size:.9rem;color:var(--ink-soft)}
   .map-help{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin:8px 0 18px;font-size:13px;color:var(--ink-soft)}
   .legend-dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .map-help .leg{position:relative;cursor:help}
+  .map-help .leg .tip{position:absolute;left:0;top:150%;width:240px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--ink);line-height:1.45;z-index:40;opacity:0;visibility:hidden;transform:translateY(-4px);transition:.15s;pointer-events:none}
+  .map-help .leg:hover .tip{opacity:1;visibility:visible;transform:none}
+  .map-help .leg .tip b{display:block;margin-bottom:3px}
+  .map-help .leg .tip::before{content:"";position:absolute;left:14px;top:-6px;width:11px;height:11px;background:#fff;border-left:1px solid var(--line);border-top:1px solid var(--line);transform:rotate(45deg)}
   #mapWrap{position:relative;background:var(--bg-soft);border:1px solid var(--line);border-radius:var(--radius);padding:26px 20px;overflow:hidden}
   #edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
   .layer{position:relative;z-index:2;margin:0 0 30px}
@@ -272,6 +277,14 @@ const UI = {
     map_lead:"Foundations sit at the bottom; strategies and horizontal measures build on top. Click any initiative to highlight what it builds on and what builds on it.",
     map_hint:"Click a node • click empty space to reset",
     cluster:{framework:"Framework",infra:"Infrastructure",regulation:"Regulation",strategy:"Strategy",cloud:"Cloud sovereignty",horizontal:"Horizontal"},
+    clusterDesc:{
+      framework:"The overarching programme that sets the EU's measurable 2030 targets and ties the other initiatives together.",
+      infra:"Investment and rules that build Europe's physical and strategic tech base — chips, compute, networks and quantum.",
+      regulation:"Binding EU laws that set the rules of the game for AI, data, online platforms and product security.",
+      strategy:"Non-binding action plans and strategies that set direction, coordinate effort and steer funding.",
+      cloud:"Measures targeting sovereign cloud and AI infrastructure, and how a provider's sovereignty is assessed.",
+      horizontal:"Cross-cutting measures — simplification, security and openness — that apply across all the others."
+    },
     layers:["Foundation — overarching framework","Infrastructure & strategic technologies","Core regulation — data, AI, markets, cyber","Strategies — orchestration & adoption","Horizontal — simplification, security, openness"],
     timeline_eyebrow:"When it happens", timeline_h2:"Timeline 2022 → 2027+",
     timeline_lead:"From the Digital Decade's 2030 targets to the latest 2026 proposals. Click any entry for full detail.",
@@ -322,6 +335,14 @@ const UI = {
     map_lead:"Grundlagen liegen unten; Strategien und Querschnittsmaßnahmen bauen darauf auf. Klicken Sie eine Initiative an, um hervorzuheben, worauf sie aufbaut und was auf ihr aufbaut.",
     map_hint:"Knoten anklicken • leere Fläche klicken zum Zurücksetzen",
     cluster:{framework:"Rahmen",infra:"Infrastruktur",regulation:"Regulierung",strategy:"Strategie",cloud:"Cloud-Souveränität",horizontal:"Querschnitt"},
+    clusterDesc:{
+      framework:"Das übergreifende Programm, das die messbaren EU-Ziele für 2030 setzt und die anderen Initiativen verbindet.",
+      infra:"Investitionen und Regeln, die Europas physische und strategische Technikbasis aufbauen — Chips, Rechenleistung, Netze und Quanten.",
+      regulation:"Verbindliche EU-Gesetze, die die Spielregeln für KI, Daten, Online-Plattformen und Produktsicherheit festlegen.",
+      strategy:"Unverbindliche Aktionspläne und Strategien, die Richtung vorgeben, Kräfte bündeln und Förderung lenken.",
+      cloud:"Maßnahmen für souveräne Cloud- und KI-Infrastruktur und dafür, wie die Souveränität eines Anbieters bewertet wird.",
+      horizontal:"Querschnittsmaßnahmen — Vereinfachung, Sicherheit und Offenheit —, die für alle anderen gelten."
+    },
     layers:["Grundlage – übergeordneter Rahmen","Infrastruktur & strategische Technologien","Kernregulierung – Daten, KI, Märkte, Cyber","Strategien – Orchestrierung & Verbreitung","Querschnitt – Vereinfachung, Sicherheit, Offenheit"],
     timeline_eyebrow:"Zeitlicher Ablauf", timeline_h2:"Zeitleiste 2022 → 2027+",
     timeline_lead:"Von den 2030-Zielen der Digitalen Dekade bis zu den jüngsten Vorschlägen von 2026. Klicken Sie einen Eintrag für alle Details an.",
@@ -701,7 +722,7 @@ function renderStatic(){
   document.getElementById('miniCards').innerHTML=ui('mini').map(m=>`<div class="mini"><h4>${m.h}</h4><p>${m.p}</p></div>`).join('');
   // legend
   document.getElementById('legend').innerHTML=
-    clusterOrder.map(k=>`<span><span class="legend-dot" style="background:${colorByKey[k]}"></span>${ui('cluster')[k]}</span>`).join('')
+    clusterOrder.map(k=>`<span class="leg"><span class="legend-dot" style="background:${colorByKey[k]}"></span>${ui('cluster')[k]}<span class="tip"><b>${ui('cluster')[k]}</b>${ui('clusterDesc')[k]}</span></span>`).join('')
     +`<span style="margin-left:auto"><em>${ui('map_hint')}</em></span>`;
   // lang buttons
   document.querySelectorAll('#lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
@@ -790,7 +811,7 @@ function renderGrid(){
   DATA.filter(d=>activeFilter==='all'||d.cluster===activeFilter).forEach(d=>{
     const card=document.createElement('div');card.className='card';card.style.setProperty('--c',colorByKey[d.cluster]);
     const w=T(d.what);
-    card.innerHTML=`<div class="cl">${ui('cluster')[d.cluster]}</div><h4>${T(d.name)}</h4><p>${w.slice(0,120)}…</p>
+    card.innerHTML=`<div class="cl" title="${ui('clusterDesc')[d.cluster]}">${ui('cluster')[d.cluster]}</div><h4>${T(d.name)}</h4><p>${w.slice(0,120)}…</p>
       <div class="row"><span class="status ${scls(d.status)}">${T(d.statusLabel)}</span><span class="when muted" style="font-size:12px">${d.date}</span></div>
       ${d.note?`<span class="cnote">⚠ ${T(d.note)}</span>`:''}`;
     card.addEventListener('click',()=>openModal(d.id));
@@ -812,7 +833,7 @@ function openModal(id){
   modal.innerHTML=`
     <div class="modal-head" style="border-top:5px solid ${col}">
       <button class="close" aria-label="Close">×</button>
-      <div class="cl">${ui('cluster')[d.cluster]}</div>
+      <div class="cl" title="${ui('clusterDesc')[d.cluster]}">${ui('cluster')[d.cluster]}</div>
       <h3>${T(d.name)}</h3>
       <div class="kv"><span class="k">${d.date}</span><span class="k">${T(d.doc)}</span><span class="status ${scls(d.status)}">${T(d.statusLabel)}</span></div>
     </div>
